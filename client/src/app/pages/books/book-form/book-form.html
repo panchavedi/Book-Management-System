@@ -1,0 +1,32 @@
+<section class="form-page">
+  <a routerLink="/books">Books</a>
+  <h1>{{ isEdit() ? 'Edit book' : 'New book' }}</h1>
+
+  @if (loading()) {
+    <p class="state">Loading</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <input formControlName="title" placeholder="Title" />
+      <input formControlName="isbn" placeholder="ISBN" />
+      <app-entity-typeahead
+        label="Author"
+        kind="author"
+        [selected]="selectedAuthor()"
+        (selectedChange)="selectedAuthor.set($event)"
+      />
+      <app-entity-typeahead
+        label="Category"
+        kind="category"
+        [selected]="selectedCategory()"
+        (selectedChange)="selectedCategory.set($event)"
+      />
+      <input formControlName="publisher" placeholder="Publisher" />
+      <input type="date" formControlName="printedOn" />
+      <input type="number" min="1" formControlName="totalCopies" placeholder="Total copies" />
+      <textarea formControlName="about" rows="6" placeholder="About"></textarea>
+      <button [disabled]="form.invalid || !selectedAuthor() || !selectedCategory() || saving()">
+        {{ saving() ? 'Saving' : 'Save' }}
+      </button>
+    </form>
+  }
+</section>

@@ -1,0 +1,50 @@
+<section class="borrowed">
+  <header>
+    <div>
+      <span class="eyebrow">YOUR READING LIST</span>
+      <h1>Borrowed Books</h1>
+      <p>{{ borrowing.activeBorrowingCount() }} of {{ borrowing.maxBooks }} books borrowed</p>
+    </div>
+
+    <div class="policy-card">
+      <div>
+        <strong>One category at a time</strong>
+        @if (borrowing.borrowedCategoryName(); as category) {
+          <span>You are currently borrowing <b>{{ category }}</b> books.</span>
+        } @else {
+          <span>Choose a category and borrow up to 5 books from it.</span>
+        }
+      </div>
+      <div class="limit">
+        <strong>{{ borrowing.activeBorrowingCount() }}</strong>
+        <span>/ {{ borrowing.maxBooks }}</span>
+      </div>
+    </div>
+  </header>
+
+  @if (borrowing.activeBorrowings().length) {
+    <div class="list">
+      @for (item of borrowing.activeBorrowings(); track item.bookId) {
+        <article class="borrowed-book">
+          <a [routerLink]="['/books', item.bookId]" class="book-info">
+            <span class="cover-letter">{{ item.title.charAt(0).toUpperCase() }}</span>
+            <span class="copy">
+              <strong>{{ item.title }}</strong>
+              <small>{{ item.categoryName }} · Borrowed {{ item.borrowedOn | date:'mediumDate' }}</small>
+            </span>
+          </a>
+          <button type="button" (click)="returnBook(item.bookId)" [disabled]="workingBookId() !== null">
+            {{ workingBookId() === item.bookId ? 'Returning…' : 'Return' }}
+          </button>
+        </article>
+      }
+    </div>
+  } @else {
+    <div class="empty">
+      <span class="empty-icon">＋</span>
+      <h2>No borrowed books yet</h2>
+      <p>Pick a category from the library and borrow up to five books.</p>
+      <a routerLink="/books">Explore Library</a>
+    </div>
+  }
+</section>

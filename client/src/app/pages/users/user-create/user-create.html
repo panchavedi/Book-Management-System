@@ -1,0 +1,16 @@
+<section class="user-page">
+  <a routerLink="/dashboard">Library</a>
+  <h1>New user</h1>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <input formControlName="username" placeholder="Username" />
+    <input formControlName="email" placeholder="Email" />
+    <input type="password" formControlName="password" placeholder="Password" />
+    <select formControlName="role">
+      @for (role of roles; track role) {
+        <option [value]="role">{{ role }}</option>
+      }
+    </select>
+    <button [disabled]="saving()">{{ saving() ? 'Creating' : 'Create' }}</button>
+  </form>
+</section>

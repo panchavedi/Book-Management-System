@@ -1,0 +1,35 @@
+<section class="catalog">
+  <header>
+    <h1>Books</h1>
+    <form [formGroup]="filters">
+      <input formControlName="keyword" placeholder="Search" />
+    </form>
+    @if (auth.isAdmin()) {
+      <a routerLink="/books/new">Add book</a>
+    }
+  </header>
+
+  <aside class="borrowing-policy">
+    <div class="policy-icon">5</div>
+    <div>
+      <strong>Borrow up to {{ borrowing.maxBooks }} books</strong>
+      @if (borrowing.borrowedCategoryName(); as category) {
+        <span>Category locked to <b>{{ category }}</b> · {{ borrowing.activeBorrowingCount() }}/{{ borrowing.maxBooks }} used</span>
+      } @else {
+        <span>Choose one category. All borrowed books must be from that category.</span>
+      }
+    </div>
+  </aside>
+
+  @if (loading()) {
+    <p class="state">Loading</p>
+  } @else if (books().length) {
+    <div class="grid">
+      @for (book of books(); track book.id) {
+        <app-book-card [book]="book" [admin]="auth.isAdmin()" (deleteBook)="delete($event)" />
+      }
+    </div>
+  } @else {
+    <p class="state">No books</p>
+  }
+</section>

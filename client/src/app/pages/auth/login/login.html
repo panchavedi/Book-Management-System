@@ -1,0 +1,37 @@
+<main class="login">
+  <section class="card">
+    <h1>Library</h1>
+
+    <div class="switch" aria-label="Authentication mode">
+      <button type="button" [class.active]="mode() === 'login'" (click)="setMode('login')">Login</button>
+      <button type="button" [class.active]="mode() === 'register'" (click)="setMode('register')">Register</button>
+    </div>
+
+    <form (ngSubmit)="submit()" [formGroup]="mode() === 'login' ? loginForm : registerForm">
+      <label>
+        <input formControlName="username" autocomplete="username" placeholder="Username" />
+      </label>
+
+      @if (mode() === 'register') {
+        <label>
+          <input formControlName="email" autocomplete="email" placeholder="Email" />
+        </label>
+      }
+
+      <label>
+        <input type="password" formControlName="password" autocomplete="current-password" placeholder="Password" />
+      </label>
+
+      <button class="primary" [disabled]="loading()">
+        {{ loading() ? 'Please wait' : (mode() === 'login' ? 'Login' : 'Create account') }}
+      </button>
+    </form>
+
+    @if (message()) {
+      <p class="message">{{ message() }}</p>
+    }
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+  </section>
+</main>

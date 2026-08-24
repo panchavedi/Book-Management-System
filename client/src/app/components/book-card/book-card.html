@@ -1,0 +1,21 @@
+<article class="book-card">
+  <a class="cover" [routerLink]="['/books', book.id]" [style.background]="coverStyle">
+    <div class="spine"></div>
+    <span>{{ book.title.charAt(0).toUpperCase() }}</span>
+  </a>
+
+  <h2><a [routerLink]="['/books', book.id]">{{ book.title }}</a></h2>
+  <p>{{ book.authorName || 'Unknown author' }}</p>
+  <small>{{ book.availableCopies }} available · {{ book.borrowedCopies }} borrowed</small>
+  @if (book.categoryName) {
+    <span class="category">{{ book.categoryName }}</span>
+  }
+
+  @if (admin) {
+    <div class="actions">
+      <a [routerLink]="['/books', book.id, 'edit']">Edit</a>
+      <button type="button" (click)="deleteBook.emit(book)">Delete</button>
+    </div>
+  }
+</article>
+

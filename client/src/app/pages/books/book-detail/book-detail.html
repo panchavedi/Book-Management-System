@@ -1,0 +1,58 @@
+@if (loading()) {
+  <p class="state">Loading</p>
+} @else if (book(); as item) {
+  <section class="detail">
+    <a class="back" routerLink="/books">Books</a>
+
+    <div class="hero">
+      <div class="cover"><span>{{ item.title.charAt(0).toUpperCase() }}</span></div>
+      <span class="category-pill">{{ item.categoryName }}</span>
+      <h1>{{ item.title }}</h1>
+      <p>{{ item.authorName }}</p>
+
+      <div class="borrow-summary" aria-label="Borrowing status">
+        <strong>{{ borrowing.activeBorrowingCount() }} / {{ borrowing.maxBooks }}</strong>
+        <span>books borrowed</span>
+        @if (borrowing.borrowedCategoryName(); as category) {
+          <span class="summary-category">Category locked to <b>{{ category }}</b></span>
+        } @else {
+          <span class="summary-category">You can choose one category</span>
+        }
+      </div>
+
+      <div class="links">
+        @if (isBorrowedByMe()) {
+          <button type="button" (click)="returnBook()" [disabled]="working()">
+            {{ working() ? 'Returning' : 'Return Book' }}
+          </button>
+        } @else {
+          <button type="button" (click)="borrow()" [disabled]="!canBorrow() || working()">
+            {{ working() ? 'Borrowing' : 'Borrow Book' }}
+          </button>
+        }
+        @if (auth.isAdmin()) {
+          <a [routerLink]="['/books', item.id, 'edit']">Edit</a>
+        }
+      </div>
+
+      @if (!isBorrowedByMe() && borrowMessage()) {
+        <p class="borrow-message">{{ borrowMessage() }}</p>
+      }
+    </div>
+
+    <div class="facts">
+      <article><span>ISBN</span><strong>{{ item.isbn }}</strong></article>
+      <article><span>Category</span><strong>{{ item.categoryName }}</strong></article>
+      <article><span>Publisher</span><strong>{{ item.publisher || '—' }}</strong></article>
+      <article><span>Printed</span><strong>{{ item.printedOn ? (item.printedOn | date:'mediumDate') : '—' }}</strong></article>
+      <article><span>Available</span><strong>{{ item.availableCopies }}</strong></article>
+      <article><span>Borrowed</span><strong>{{ item.borrowedCopies }}</strong></article>
+    </div>
+
+    @if (item.about) {
+      <p class="about">{{ item.about }}</p>
+    }
+  </section>
+} @else {
+  <p class="state">Not found</p>
+}

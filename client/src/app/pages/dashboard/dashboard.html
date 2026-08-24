@@ -1,0 +1,154 @@
+<div class="dashboard-container">
+  <header class="intro-header">
+    <h1>Good morning, Reader.</h1>
+    <p>{{ borrowedCopies() }} of {{ borrowing.maxBooks }} books borrowed. @if (borrowedCategory(); as category) { Category: {{ category }}. } @else { Choose one category to get started. }</p>
+  </header>
+
+  <!-- Spotlight Row -->
+  <section class="spotlight-row">
+    <!-- Continue Reading Card -->
+    <article class="continue-card">
+      <div class="continue-cover cover-1984">
+        <div class="book-spine"></div>
+        <div class="cover-content">
+          <span class="cover-title-top">1984</span>
+          <div class="cover-art-eye">
+            <svg viewBox="0 0 100 60" class="eye-svg">
+              <path d="M10,30 Q50,0 90,30 Q50,60 10,30 Z" fill="none" stroke="#2c3e50" stroke-width="3"/>
+              <circle cx="50" cy="30" r="14" fill="#2c3e50"/>
+              <circle cx="50" cy="30" r="6" fill="#75a5b5"/>
+            </svg>
+          </div>
+          <span class="cover-author-bottom">GEORGE ORWELL</span>
+        </div>
+      </div>
+
+      <div class="continue-details">
+        <span class="pill-badge">CONTINUE READING</span>
+        <h2 class="book-heading">1984</h2>
+        <p class="book-author">George Orwell</p>
+
+        <div class="reading-progress-meta">
+          <span class="pages-text">29 / 328 pages</span>
+          <span class="percent-text">9%</span>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-bar-fill" style="width: 9%"></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Monthly Goal Card -->
+    <article class="goal-card">
+      <h2 class="goal-heading">Monthly Goal</h2>
+      <p class="goal-subtext">{{ goalSubtitle() }}</p>
+
+      <div class="goal-stat-row">
+        <strong class="goal-current">{{ borrowedCopies() }}</strong>
+        <span class="goal-target">/ {{ borrowing.maxBooks }} Books</span>
+      </div>
+
+      <div class="goal-track">
+        <div class="goal-fill" [style.width.%]="goalProgress()"></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Recently Added Books -->
+  <section class="recent-section">
+    <div class="section-header">
+      <h2>Recently Added Books</h2>
+      <a routerLink="/books" class="view-all-link">View All</a>
+    </div>
+
+    <div class="books-grid">
+      @for (book of displayBooks(); track book.id; let i = $index) {
+        <a [routerLink]="['/books', book.id]" class="book-card-item">
+          <div class="book-cover-wrap" [ngClass]="book.paletteClass">
+            <div class="cover-spine-effect"></div>
+
+            @if (book.paletteClass === 'cover-sky') {
+              <div class="cover-inner sky-theme">
+                <span class="theme-top-title">The<br>Silhouette of<br>Light</span>
+                <div class="theme-center-graphic">
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="feather-icon">
+                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                    <line x1="16" y1="8" x2="2" y2="22" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <span class="theme-bot-author">Jane Doe</span>
+              </div>
+            } @else if (book.paletteClass === 'cover-mustard') {
+              <div class="cover-inner mustard-theme">
+                <span class="theme-top-title">BRUTALISM</span>
+                <span class="theme-sub-text">Architecture in the Raw</span>
+                <div class="theme-center-graphic buildings-graphic">
+                  <div class="b-col c1"></div>
+                  <div class="b-col c2"></div>
+                  <div class="b-col c3"></div>
+                </div>
+                <span class="theme-bot-author">Marcus Aurelius</span>
+              </div>
+            } @else if (book.paletteClass === 'cover-teal') {
+              <div class="cover-inner teal-theme">
+                <span class="theme-top-title">HORIZON'S<br>DAWN</span>
+                <span class="theme-sub-text">A JOURNEY TO TRANQUILITY</span>
+                <div class="theme-center-graphic sun-graphic">
+                  <div class="sun-circle"></div>
+                  <div class="water-waves"></div>
+                </div>
+                <span class="theme-bot-author">Elena Vance</span>
+              </div>
+            } @else if (book.paletteClass === 'cover-amber') {
+              <div class="cover-inner amber-theme">
+                <span class="theme-top-title">The<br>Indigo Hue</span>
+                <div class="theme-center-graphic forest-graphic">
+                  <div class="tree t1"></div>
+                  <div class="tree t2"></div>
+                  <div class="tree t3"></div>
+                </div>
+                <span class="theme-bot-author">Samuel T. Coleridge</span>
+              </div>
+            } @else if (book.paletteClass === 'cover-purple') {
+              <div class="cover-inner purple-theme">
+                <span class="theme-top-title">CONCRETE<br>CANVAS</span>
+                <div class="theme-center-graphic skyline-graphic">
+                  <div class="sky-tower s1"></div>
+                  <div class="sky-tower s2"></div>
+                  <div class="sky-tower s3"></div>
+                </div>
+                <span class="theme-bot-author">Marcus Aurelius</span>
+              </div>
+            } @else {
+              <div class="cover-inner generic-theme">
+                <span class="theme-top-title">{{ book.title }}</span>
+                <span class="initial-emblem">{{ book.title.charAt(0).toUpperCase() }}</span>
+                <span class="theme-bot-author">{{ book.authorName }}</span>
+              </div>
+            }
+          </div>
+
+          <strong class="book-title-label" [title]="book.title">{{ book.title }}</strong>
+          <small class="book-author-label" [title]="book.authorName">{{ book.authorName }}</small>
+        </a>
+      }
+
+      <!-- Browse More Card -->
+      <a routerLink="/books" class="browse-more-card">
+        <div class="plus-icon-circle">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <span class="browse-text">Browse More</span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="dashboard-footer">
+    © 2024 Libre Library. All rights reserved.
+  </footer>
+</div>
+

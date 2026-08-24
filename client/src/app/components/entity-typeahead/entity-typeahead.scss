@@ -1,0 +1,136 @@
+.typeahead {
+  position: relative;
+  display: grid;
+  gap: 6px;
+}
+
+.typeahead > span {
+  color: #86868b;
+  font-size: 12px;
+  font-weight: 600;
+  padding-left: 4px;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d2d2d7;
+  border-radius: 14px;
+  padding: 15px 16px;
+  color: #1d1d1f;
+  background: #ffffff;
+  font: inherit;
+  outline: none;
+}
+
+input:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 8;
+  display: grid;
+  gap: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 8px;
+  background: #ffffff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.menu button {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu button:hover {
+  background: #eef6ff;
+}
+
+.menu small,
+.empty p,
+.subtle {
+  color: #64748b;
+}
+
+.empty p {
+  margin: 4px 6px 8px;
+  font-size: 13px;
+}
+
+.empty button {
+  justify-content: center;
+  background: #0071e3;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 6, 23, 0.58);
+  backdrop-filter: blur(10px);
+}
+
+.modal {
+  width: min(460px, 100%);
+  border-radius: 28px;
+  padding: 26px;
+  background:
+    linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(34, 197, 94, 0.1)),
+    #ffffff;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+}
+
+.modal p {
+  margin: 0;
+  color: #0f766e;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.modal h2 {
+  margin: 8px 0 18px;
+  color: #101828;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.modal-actions button {
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  background: #0071e3;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modal-actions .ghost {
+  background: #f5f5f7;
+  color: #1d1d1f;
+}

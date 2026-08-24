@@ -1,0 +1,47 @@
+<label class="typeahead">
+  <span>{{ label }}</span>
+  <input
+    type="text"
+    [value]="query()"
+    [placeholder]="'Start typing ' + title().toLowerCase() + ' name'"
+    (input)="onInput($any($event.target).value)"
+    (focus)="onInput(query())"
+  />
+
+  @if (loading()) {
+    <div class="menu subtle">Searching...</div>
+  } @else if (options().length) {
+    <div class="menu">
+      @for (option of options(); track option.id) {
+        <button type="button" (click)="pick(option)">
+          <strong>{{ option.name }}</strong>
+          <small>{{ title() }}</small>
+        </button>
+      }
+    </div>
+  } @else if (query().trim().length > 1 && !selected) {
+    <div class="menu empty">
+      <p>No {{ title().toLowerCase() }} found for "{{ query() }}".</p>
+      <button type="button" (click)="openCreate()">Add new {{ title().toLowerCase() }}</button>
+    </div>
+  }
+</label>
+
+@if (showModal()) {
+  <div class="modal-backdrop" role="presentation" (click)="closeCreate()">
+    <section class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <p>{{ title() }} not found</p>
+      <h2>Add "{{ draftName() }}"</h2>
+      <input
+        type="text"
+        [value]="draftName()"
+        (input)="draftName.set($any($event.target).value)"
+        autofocus
+      />
+      <div class="modal-actions">
+        <button type="button" class="ghost" (click)="closeCreate()">Cancel</button>
+        <button type="button" (click)="create()">Create {{ title() }}</button>
+      </div>
+    </section>
+  </div>
+}
