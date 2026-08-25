@@ -17,7 +17,7 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly tokenKey = 'bms_access_token';
   private readonly userKey = 'bms_user';
-  private readonly api = 'http://localhost:8081/api/auth';
+  private readonly api = 'http://localhost:8085/api/auth';
 
   readonly currentUser = signal<User | null>(this.readStoredUser());
   readonly isAuthenticated = computed(() => !!this.token());

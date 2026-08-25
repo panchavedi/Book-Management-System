@@ -6,7 +6,7 @@ import { Book, BookRequest, BookSearchParams, Borrowing, PagedResponse } from '.
 @Injectable({ providedIn: 'root' })
 export class BookService {
   private readonly http = inject(HttpClient);
-  private readonly api = 'http://localhost:8082/books';
+  private readonly api = 'http://localhost:8085/books';
 
   list(params: BookSearchParams = {}): Observable<Book[]> {
     return this.http.get<Book[] | PagedResponse<Book>>(this.api, { params: this.params(params) }).pipe(
