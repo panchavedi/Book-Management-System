@@ -19,6 +19,7 @@ export class EntityTypeaheadComponent implements OnChanges {
   @Input({ required: true }) label = '';
   @Input({ required: true }) kind: 'author' | 'category' = 'author';
   @Input() selected: EntityOption | null = null;
+  @Input() allowCreate = true;
   @Output() selectedChange = new EventEmitter<EntityOption | null>();
 
   readonly query = signal('');

@@ -89,6 +89,25 @@ export class BorrowingStateService {
     this.activeBorrowings.set(next);
   }
 
+
+  syncFromServer(borrowings: Borrowing[]): void {
+    const current = this.activeBorrowings();
+    const next: ActiveBorrowing[] = borrowings.map((borrowing) => {
+      const existing = current.find((item) => item.bookId === borrowing.bookId);
+      return {
+        bookId: borrowing.bookId,
+        title: borrowing.bookTitle || existing?.title || `Book #${borrowing.bookId}`,
+        isbn: borrowing.isbn ?? existing?.isbn ?? '',
+        categoryId: borrowing.categoryId ?? existing?.categoryId ?? 0,
+        categoryName: borrowing.categoryName ?? existing?.categoryName ?? 'Current category',
+        borrowedOn: borrowing.borrowedOn
+      };
+    });
+
+    this.persist(next);
+    this.activeBorrowings.set(next);
+  }
+
   markBorrowed(book: Book, response?: Borrowing): void {
     if (!this.canBorrow(book)) {
       return;

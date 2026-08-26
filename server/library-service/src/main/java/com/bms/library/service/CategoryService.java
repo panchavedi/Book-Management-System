@@ -13,6 +13,8 @@ public interface CategoryService {
 
     CategoryResponse findById(Long id);
 
+    List<CategoryResponse> search(String keyword);
+
     CategoryResponse update(
             Long id,
             CategoryRequest request

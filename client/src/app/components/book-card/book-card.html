@@ -7,6 +7,9 @@
   <h2><a [routerLink]="['/books', book.id]">{{ book.title }}</a></h2>
   <p>{{ book.authorName || 'Unknown author' }}</p>
   <small>{{ book.availableCopies }} available · {{ book.borrowedCopies }} borrowed</small>
+  @if (!admin) {
+    <span class="borrow-state" [class.return-state]="book.borrowed">{{ book.borrowed ? 'Return Book' : 'Borrow Book' }}</span>
+  }
   @if (book.categoryName) {
     <span class="category">{{ book.categoryName }}</span>
   }

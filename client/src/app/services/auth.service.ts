@@ -17,11 +17,15 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly tokenKey = 'bms_access_token';
   private readonly userKey = 'bms_user';
-  private readonly api = 'http://localhost:8085/api/auth';
+  private readonly api = 'http://localhost:8081/api/auth';
 
   readonly currentUser = signal<User | null>(this.readStoredUser());
   readonly isAuthenticated = computed(() => !!this.token());
   readonly isAdmin = computed(() => this.currentUser()?.role?.toUpperCase() === 'ADMIN');
+  readonly isStaff = computed(() => {
+    const role = this.currentUser()?.role?.toUpperCase();
+    return role === 'ADMIN' || role === 'LIBRARIAN';
+  });
 
   login(req: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.api}/login`, req).pipe(

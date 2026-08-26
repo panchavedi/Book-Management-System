@@ -77,16 +77,59 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public BookResponse findById(Long id) {
+    public BookResponse findById(
+            Long bookId,
+            Long borrowerId
+    ) {
 
         Book book =
                 bookRepository
-                        .findWithAuthorAndCategoryById(id)
+                        .findWithAuthorAndCategoryById(bookId)
                         .orElseThrow(
-                                () -> new BookNotFoundException(id)
+                                () -> new BookNotFoundException(bookId)
                         );
 
-        return toResponse(book);
+        boolean borrowed =
+                borrowingRepository
+                        .existsByBookIdAndBorrowerIdAndStatus(
+                                bookId,
+                                borrowerId,
+                                BorrowingStatus.BORROWED
+                        );
+
+        return toResponse(book, borrowed);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookResponse> findByAuthor(
+            Long authorId
+    ) {
+        if (!authorRepository.existsById(authorId)) {
+            throw new AuthorNotFoundException(authorId);
+        }
+
+        return bookRepository
+                .findByAuthorId(authorId)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookResponse> findByCategory(
+            Long categoryId
+    ) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new CategoryNotFoundException(categoryId);
+        }
+
+        return bookRepository
+                .findByCategoryId(categoryId)
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     @Override
@@ -171,15 +214,16 @@ public class BookServiceImpl implements BookService {
 
         boolean hasActiveBorrowings =
                 borrowingRepository
-                        .existsByBookIdAndBorrowerIdAndStatus(
+                        .existsByBookIdAndStatus(
                                 id,
-                                -1L,
                                 BorrowingStatus.BORROWED
                         );
 
-        /*
-         * We will improve this query below.
-         */
+        if (hasActiveBorrowings) {
+            throw new IllegalStateException(
+                    "Book cannot be deleted while it has active borrowers"
+            );
+        }
 
         bookRepository.delete(book);
     }
@@ -263,13 +307,6 @@ public class BookServiceImpl implements BookService {
             Long borrowerId
     ) {
 
-        /*
-         * Always lock the book first.
-         * Borrow also locks book first.
-         *
-         * Keeping a consistent lock order helps avoid
-         * deadlocks.
-         */
         Book book =
                 bookRepository
                         .findByIdForUpdate(bookId)
@@ -299,6 +336,14 @@ public class BookServiceImpl implements BookService {
 
     private BookResponse toResponse(Book book) {
 
+        return toResponse(book, false);
+    }
+
+    private BookResponse toResponse(
+            Book book,
+            boolean borrowed
+    ) {
+
         return BookResponse.builder()
                 .id(book.getId())
                 .title(book.getTitle())
@@ -313,6 +358,7 @@ public class BookServiceImpl implements BookService {
                 .availableCopies(book.getAvailableCopies())
                 .borrowedCopies(book.getBorrowedCopies())
                 .about(book.getAbout())
+                .borrowed(borrowed)
                 .build();
     }
 

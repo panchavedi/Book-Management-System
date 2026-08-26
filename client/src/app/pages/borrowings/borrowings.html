@@ -1,0 +1,78 @@
+<section class="borrowings-page">
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">ADMIN</span>
+      <h1>Borrowings</h1>
+      <p>Monitor every active borrowing and inspect borrowers for each book.</p>
+    </div>
+    <button type="button" class="refresh" (click)="refresh()">Refresh</button>
+  </header>
+
+  <section class="summary">
+    <article><span>Active borrowings</span><strong>{{ activeBorrowings().length }}</strong></article>
+    <article><span>Books currently borrowed</span><strong>{{ books().length }}</strong></article>
+  </section>
+
+  @if (loading()) {
+    <p class="state">Loading active borrowings…</p>
+  } @else if (activeBorrowings().length) {
+    <section class="table-card">
+      <div class="table-title">
+        <h2>Active Borrowing Transactions</h2>
+        <span>{{ activeBorrowings().length }} transaction{{ activeBorrowings().length === 1 ? '' : 's' }}</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Book</th><th>Borrower ID</th><th>Borrowed On</th><th>Status</th></tr></thead>
+          <tbody>
+            @for (item of activeBorrowings(); track item.id) {
+              <tr>
+                <td><a [routerLink]="['/books', item.bookId]">{{ item.bookTitle }}</a></td>
+                <td>{{ item.borrowerId }}</td>
+                <td>{{ item.borrowedOn | date:'medium' }}</td>
+                <td><span class="status">{{ item.status }}</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="books-section">
+      <div class="section-heading">
+        <div><h2>Active Borrowers by Book</h2><p>Each book expands to its live borrower list.</p></div>
+      </div>
+
+      @for (group of books(); track group.bookId) {
+        <article class="book-group">
+          <button type="button" class="book-header" (click)="toggleBook(group)" [attr.aria-expanded]="group.open">
+            <span class="book-icon">{{ group.bookTitle.charAt(0).toUpperCase() }}</span>
+            <span class="book-copy"><strong>{{ group.bookTitle }}</strong><small>{{ group.activeCount }} active borrower{{ group.activeCount === 1 ? '' : 's' }}</small></span>
+            <span class="chevron">{{ group.open ? '−' : '+' }}</span>
+          </button>
+
+          @if (group.open) {
+            <div class="nested">
+              @if (group.loading) {
+                <p class="nested-state">Loading borrowers…</p>
+              } @else if (group.borrowers.length) {
+                <table>
+                  <thead><tr><th>Borrower ID</th><th>Borrowed On</th><th>Status</th></tr></thead>
+                  <tbody>
+                    @for (borrower of group.borrowers; track borrower.id) {
+                      <tr><td>{{ borrower.borrowerId }}</td><td>{{ borrower.borrowedOn | date:'medium' }}</td><td><span class="status">{{ borrower.status }}</span></td></tr>
+                    }
+                  </tbody>
+                </table>
+              } @else {
+                <p class="nested-state">No active borrowers.</p>
+              }
+            </div>
+          }
+        </article>
+      }
+    </section>
+  } @else {
+    <div class="empty"><h2>No active borrowings</h2><p>There are currently no books checked out.</p></div>
+  }
+</section>

@@ -61,6 +61,27 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<CategoryResponse> search(
+            String keyword
+    ) {
+
+        if (keyword == null ||
+                keyword.trim().isEmpty()) {
+
+            return findAll();
+        }
+
+        return categoryRepository
+                .findByNameContainingIgnoreCase(
+                        keyword.trim()
+                )
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
     public CategoryResponse update(
             Long id,
             CategoryRequest request

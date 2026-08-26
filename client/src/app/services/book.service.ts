@@ -36,6 +36,18 @@ export class BookService {
     );
   }
 
+  byAuthor(authorId: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.api}/author/${authorId}`).pipe(
+      map((books) => books.map((book) => this.normalize(book)))
+    );
+  }
+
+  byCategory(categoryId: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.api}/category/${categoryId}`).pipe(
+      map((books) => books.map((book) => this.normalize(book)))
+    );
+  }
+
   borrow(id: number): Observable<Borrowing> {
     return this.http.post<Borrowing>(`${this.api}/${id}/borrow`, null);
   }
@@ -60,13 +72,15 @@ export class BookService {
   }
 
   private normalize(book: Book): Book {
+    const borrowedCopies = book.borrowedCopies ?? Math.max(book.totalCopies - book.availableCopies, 0);
     return {
       ...book,
       publisher: book.publisher ?? null,
       printedOn: book.printedOn ?? null,
       about: book.about ?? null,
-      borrowedCopies: book.borrowedCopies ?? Math.max(book.totalCopies - book.availableCopies, 0),
-      status: book.availableCopies > 0 ? 'AVAILABLE' : book.borrowedCopies > 0 ? 'BORROWED' : 'UNAVAILABLE'
+      borrowed: !!book.borrowed,
+      borrowedCopies,
+      status: book.availableCopies > 0 ? 'AVAILABLE' : borrowedCopies > 0 ? 'BORROWED' : 'UNAVAILABLE'
     };
   }
 

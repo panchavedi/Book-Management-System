@@ -575,3 +575,18 @@
 }
 
 
+
+
+.about-library-card {
+  margin-top: 2rem;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.about-library-card h2 { margin: .25rem 0 .45rem; }
+.about-library-card p { margin: 0; color: #667085; max-width: 860px; line-height: 1.55; }

@@ -8,6 +8,7 @@ import { BookDetail } from './pages/books/book-detail/book-detail';
 import { BookForm } from './pages/books/book-form/book-form';
 import { BookList } from './pages/books/book-list/book-list';
 import { UserCreate } from './pages/users/user-create/user-create';
+import { Borrowings } from './pages/borrowings/borrowings';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -23,6 +24,7 @@ export const routes: Routes = [
       { path: 'books/:id', component: BookDetail },
       { path: 'books/:id/edit', component: BookForm, canActivate: [adminGuard] },
       { path: 'borrowed', component: Borrowed },
+      { path: 'borrowings', component: Borrowings, canActivate: [adminGuard] },
       { path: 'users/new', component: UserCreate, canActivate: [adminGuard] }
     ]
   },

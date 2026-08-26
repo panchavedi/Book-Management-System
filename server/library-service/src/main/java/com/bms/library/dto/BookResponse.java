@@ -33,4 +33,6 @@ public class BookResponse {
     private int borrowedCopies;
 
     private String about;
+
+    private boolean borrowed;
 }

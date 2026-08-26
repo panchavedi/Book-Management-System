@@ -47,13 +47,41 @@ public class BooksController {
         );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BookResponse> findById(
-            @PathVariable Long id
+
+    @GetMapping("/author/{authorId}")
+    public ResponseEntity<List<BookResponse>> findByAuthor(
+            @PathVariable Long authorId
     ) {
 
         return ResponseEntity.ok(
-                bookService.findById(id)
+                bookService.findByAuthor(authorId)
+        );
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<BookResponse>> findByCategory(
+            @PathVariable Long categoryId
+    ) {
+
+        return ResponseEntity.ok(
+                bookService.findByCategory(categoryId)
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookResponse> findById(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+
+        Long borrowerId =
+                CurrentUser.getUserId(authentication);
+
+        return ResponseEntity.ok(
+                bookService.findById(
+                        id,
+                        borrowerId
+                )
         );
     }
 

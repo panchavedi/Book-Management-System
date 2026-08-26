@@ -3,6 +3,7 @@ package com.bms.library.repository;
 import com.bms.library.entity.Borrowing;
 import com.bms.library.entity.BorrowingStatus;
 import jakarta.persistence.LockModeType;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
@@ -17,7 +18,6 @@ public interface BorrowingRepository
             Long borrowerId,
             BorrowingStatus status
     );
-
     boolean existsByBookIdAndStatus(
             Long bookId,
             BorrowingStatus status
@@ -39,8 +39,35 @@ public interface BorrowingRepository
     @Query("""
         SELECT br
         FROM Borrowing br
-        WHERE br.status =
-            com.bms.library.entity.BorrowingStatus.BORROWED
+        JOIN FETCH br.book b
+        WHERE br.borrowerId = :borrowerId
+        ORDER BY br.borrowedOn DESC
     """)
-    List<Borrowing> findCurrentlyBorrowed();
+    List<Borrowing> findBorrowingHistoryByBorrowerId(
+            @Param("borrowerId") Long borrowerId
+    );
+
+
+    @Query("""
+        SELECT br
+        FROM Borrowing br
+        JOIN FETCH br.book b
+        WHERE br.borrowerId = :borrowerId
+          AND br.status = com.bms.library.entity.BorrowingStatus.BORROWED
+        ORDER BY br.borrowedOn DESC
+    """)
+    List<Borrowing> findActiveBorrowingsByBorrowerId(
+            @Param("borrowerId") Long borrowerId
+    );
+
+    List<Borrowing> findByBookIdAndStatus(
+            Long bookId,
+            BorrowingStatus status,
+            Sort sort
+    );
+
+    List<Borrowing> findByStatus(
+            BorrowingStatus status,
+            Sort sort
+    );
 }

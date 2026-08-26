@@ -22,7 +22,9 @@
   } @else if (query().trim().length > 1 && !selected) {
     <div class="menu empty">
       <p>No {{ title().toLowerCase() }} found for "{{ query() }}".</p>
-      <button type="button" (click)="openCreate()">Add new {{ title().toLowerCase() }}</button>
+      @if (allowCreate) {
+        <button type="button" (click)="openCreate()">Add new {{ title().toLowerCase() }}</button>
+      }
     </div>
   }
 </label>

@@ -60,4 +60,19 @@ public final class CurrentUser {
 
         return jwt.getClaimAsString("role");
     }
+
+    public static void requireAdmin(
+            Authentication authentication
+    ) {
+
+        String role = getRole(authentication);
+
+        if (!"ADMIN".equalsIgnoreCase(role) &&
+                !"ROLE_ADMIN".equalsIgnoreCase(role)) {
+
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Admin access required"
+            );
+        }
+    }
 }

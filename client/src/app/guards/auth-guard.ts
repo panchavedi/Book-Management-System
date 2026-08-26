@@ -13,3 +13,9 @@ export const adminGuard: CanActivateFn = (): boolean | UrlTree => {
   const router = inject(Router);
   return auth.isAdmin() ? true : router.createUrlTree(['/books']);
 };
+
+export const staffGuard: CanActivateFn = (): boolean | UrlTree => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  return auth.isStaff() ? true : router.createUrlTree(['/books']);
+};

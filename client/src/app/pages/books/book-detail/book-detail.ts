@@ -6,6 +6,8 @@ import { AuthService } from '../../../services/auth.service';
 import { BookService } from '../../../services/book.service';
 import { BorrowingStateService } from '../../../services/borrowing-state.service';
 import { ToastService } from '../../../services/toast.service';
+import { BorrowingApiService } from '../../../services/borrowing-api.service';
+import { Borrowing } from '../../../models/book.model';
 
 @Component({
   selector: 'app-book-detail',
@@ -17,16 +19,17 @@ export class BookDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly booksApi = inject(BookService);
   private readonly toast = inject(ToastService);
+  private readonly borrowingsApi = inject(BorrowingApiService);
   readonly auth = inject(AuthService);
   readonly borrowing = inject(BorrowingStateService);
 
   readonly book = signal<Book | null>(null);
   readonly loading = signal(true);
   readonly working = signal(false);
-  readonly isBorrowedByMe = computed(() => {
-    const book = this.book();
-    return !!book && this.borrowing.isBorrowed(book.id);
-  });
+  readonly isBorrowedByMe = computed(() => this.book()?.borrowed === true);
+  readonly activeBorrowers = signal<Borrowing[]>([]);
+  readonly borrowersLoading = signal(false);
+  readonly isStaff = computed(() => this.auth.isStaff());
   readonly canBorrow = computed(() => {
     const book = this.book();
     return !!book && this.borrowing.canBorrow(book);
@@ -93,10 +96,28 @@ export class BookDetail implements OnInit {
         this.borrowing.syncBook(book);
         this.book.set(book);
         this.loading.set(false);
+        if (this.isStaff()) {
+          this.loadActiveBorrowers(book.id);
+        }
       },
       error: () => {
         this.loading.set(false);
         this.toast.show('Could not load this book.', 'error');
+      }
+    });
+  }
+
+  private loadActiveBorrowers(bookId: number): void {
+    this.borrowersLoading.set(true);
+    this.borrowingsApi.activeByBook(bookId).subscribe({
+      next: (items) => {
+        this.activeBorrowers.set(items);
+        this.borrowersLoading.set(false);
+      },
+      error: () => {
+        this.activeBorrowers.set([]);
+        this.borrowersLoading.set(false);
+        this.toast.show('Could not load active borrowers for this book.', 'error');
       }
     });
   }
@@ -110,6 +131,7 @@ export class BookDetail implements OnInit {
 
     this.booksApi.get(book.id).subscribe({
       next: (updated) => {
+        this.borrowing.syncBook(updated);
         this.book.set(updated);
         this.working.set(false);
         this.toast.show(message, 'success');

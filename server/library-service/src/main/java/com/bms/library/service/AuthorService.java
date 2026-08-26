@@ -13,6 +13,8 @@ public interface AuthorService {
 
     AuthorResponse findById(Long id);
 
+    List<AuthorResponse> search(String keyword);
+
     AuthorResponse update(
             Long id,
             AuthorRequest request

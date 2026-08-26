@@ -25,6 +25,7 @@ export interface Book {
   availableCopies: number;
   borrowedCopies: number;
   about: string | null;
+  borrowed: boolean;
   status?: BookAvailability;
 }
 
@@ -57,6 +58,9 @@ export interface Borrowing {
   id: number;
   bookId: number;
   bookTitle: string;
+  isbn?: string;
+  categoryId?: number;
+  categoryName?: string;
   borrowerId: number;
   borrowedOn: string;
   returnedOn: string | null;

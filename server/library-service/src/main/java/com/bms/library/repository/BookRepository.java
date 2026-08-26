@@ -75,4 +75,15 @@ public interface BookRepository
     List<Book> findByAuthorId(
             @Param("authorId") Long authorId
     );
+
+    @Query("""
+    SELECT DISTINCT b
+    FROM Book b
+    JOIN FETCH b.author
+    JOIN FETCH b.category
+    WHERE b.category.id = :categoryId
+""")
+    List<Book> findByCategoryId(
+            @Param("categoryId") Long categoryId
+    );
 }

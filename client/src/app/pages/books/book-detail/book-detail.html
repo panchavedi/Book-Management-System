@@ -56,3 +56,38 @@
 } @else {
   <p class="state">Not found</p>
 }
+
+
+@if (isStaff()) {
+  <section class="borrowers-section" aria-labelledby="active-borrowers-heading">
+    <div class="borrowers-header">
+      <div>
+        <span class="eyebrow">BORROWINGS</span>
+        <h2 id="active-borrowers-heading">Active Borrowers</h2>
+        <p>Live borrowers currently holding this book.</p>
+      </div>
+      <strong>{{ activeBorrowers().length }}</strong>
+    </div>
+
+    @if (borrowersLoading()) {
+      <p class="state">Loading active borrowers…</p>
+    } @else if (activeBorrowers().length) {
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Borrower ID</th><th>Borrowed On</th><th>Status</th></tr></thead>
+          <tbody>
+            @for (borrower of activeBorrowers(); track borrower.id) {
+              <tr>
+                <td>{{ borrower.borrowerId }}</td>
+                <td>{{ borrower.borrowedOn | date:'medium' }}</td>
+                <td><span class="status active-status">{{ borrower.status }}</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-borrowers">No active borrowers for this book.</div>
+    }
+  </section>
+}

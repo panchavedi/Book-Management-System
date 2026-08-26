@@ -1,6 +1,6 @@
-# Libre Library Frontend
+# Library Frontend
 
-Angular frontend for the Libre digital library.
+Angular frontend for the digital library.
 
 ## Borrowing rules implemented in the UI
 

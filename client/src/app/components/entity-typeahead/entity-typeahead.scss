@@ -73,9 +73,15 @@ input:focus {
 
 .empty button {
   justify-content: center;
-  background: #0071e3;
-  color: #ffffff;
+  background: #dbeafe;
+  color: #111827;
   font-weight: 800;
+  border: 1px solid #bfdbfe;
+}
+
+.empty button:hover {
+  background: #93c5fd;
+  color: #000000;
 }
 
 .modal-backdrop {

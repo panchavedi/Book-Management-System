@@ -41,6 +41,16 @@ public class CategoryController {
         );
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<CategoryResponse>> search(
+            @RequestParam String keyword
+    ) {
+
+        return ResponseEntity.ok(
+                categoryService.search(keyword)
+        );
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponse> update(
             @PathVariable Long id,

@@ -59,6 +59,27 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<AuthorResponse> search(
+            String keyword
+    ) {
+
+        if (keyword == null ||
+                keyword.trim().isEmpty()) {
+
+            return findAll();
+        }
+
+        return authorRepository
+                .findByNameContainingIgnoreCase(
+                        keyword.trim()
+                )
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Override
     public AuthorResponse update(
             Long id,
             AuthorRequest request

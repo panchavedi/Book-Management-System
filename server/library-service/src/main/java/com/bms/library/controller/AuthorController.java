@@ -41,6 +41,16 @@ public class AuthorController {
         );
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<AuthorResponse>> search(
+            @RequestParam String keyword
+    ) {
+
+        return ResponseEntity.ok(
+                authorService.search(keyword)
+        );
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<AuthorResponse> update(
             @PathVariable Long id,

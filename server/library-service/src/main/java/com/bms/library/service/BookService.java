@@ -9,7 +9,17 @@ public interface BookService {
 
     List<BookResponse> findAll();
 
-    BookResponse findById(Long id);
+    BookResponse findById(Long id, Long borrowerId);
+
+    List<BookResponse> findByAuthor(
+            Long authorId
+    );
+
+    List<BookResponse> findByCategory(
+            Long categoryId
+    );
+
+    List<BookResponse> search(String keyword);
 
     BookResponse update(
             Long id,
@@ -17,8 +27,6 @@ public interface BookService {
     );
 
     void delete(Long id);
-
-    List<BookResponse> search(String keyword);
 
     BorrowingResponse borrow(
             Long bookId,

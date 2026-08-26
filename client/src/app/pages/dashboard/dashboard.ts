@@ -5,6 +5,7 @@ import { Book } from '../../models/book.model';
 import { AuthService } from '../../services/auth.service';
 import { BookService } from '../../services/book.service';
 import { BorrowingStateService } from '../../services/borrowing-state.service';
+import { BorrowingApiService } from '../../services/borrowing-api.service';
 
 interface DisplayBook {
   id: number | string;
@@ -86,6 +87,7 @@ export class Dashboard implements OnInit {
   private readonly booksApi = inject(BookService);
   readonly auth = inject(AuthService);
   readonly borrowing = inject(BorrowingStateService);
+  private readonly borrowingApi = inject(BorrowingApiService);
 
   readonly books = signal<Book[]>([]);
   readonly loading = signal(true);
@@ -124,6 +126,14 @@ export class Dashboard implements OnInit {
   });
 
   ngOnInit(): void {
+    this.borrowingApi.myActive().subscribe({
+      next: (items) => this.borrowing.syncFromServer(items),
+      error: (err) => {
+        // Keep last known local state on a transient API failure; never turn a real count into 0.
+        console.warn('Unable to refresh active borrowings.', err);
+      }
+    });
+
     this.booksApi.list({ size: 12 }).subscribe({
       next: (books) => {
         this.books.set(books);
