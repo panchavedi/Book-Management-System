@@ -6,8 +6,8 @@ import { AdminCreateUserRequest, RegisterRequest, RegisterResponse, User, UserUp
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private readonly http = inject(HttpClient);
-  private readonly api = 'http://localhost:8081/user';
-  private readonly authApi = 'http://localhost:8081/auth';
+  private readonly api = 'http://localhost:8085/user';
+  private readonly authApi = 'http://localhost:8085/auth';
 
   createUser(request: RegisterRequest): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(`${this.authApi}/register`, request);

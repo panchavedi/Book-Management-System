@@ -638,7 +638,7 @@ The readings area provides the user's reading/borrowing-oriented view and associ
 
 The management workflow includes a dedicated form for adding a new book, including core book information and image handling.
 
-![New Book](docs/assets/new book.png)
+![New Book](docs/assets/new-book.png)
 
 ---
 
