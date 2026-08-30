@@ -53,6 +53,7 @@ public class Category {
 
     @PreUpdate
     protected void onUpdate() {
+
         updatedAt = LocalDateTime.now();
     }
 }

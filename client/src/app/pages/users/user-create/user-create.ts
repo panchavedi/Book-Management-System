@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { UserRole } from '../../../models/auth.model';
 import { ToastService } from '../../../services/toast.service';
 import { UserService } from '../../../services/user.service';
+import { ManagedUserRole } from '../../../models/auth.model';
 
 @Component({
   selector: 'app-user-create',
@@ -17,13 +17,15 @@ export class UserCreate {
   private readonly toast = inject(ToastService);
 
   readonly saving = signal(false);
-  readonly roles: UserRole[] = ['USER', 'ADMIN', 'AUTHOR', 'LIBRARIAN'];
-
+  readonly roles: ManagedUserRole[] = ['USER', 'LIBRARIAN', 'AUTHOR', 'ADMIN'];
   readonly form = this.fb.nonNullable.group({
-    username: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
-    role: ['USER' as UserRole, Validators.required]
+    fullName: ['', [Validators.required, Validators.maxLength(150)]],
+    username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(150)]],
+    phone: ['', [Validators.required, Validators.pattern(/^[0-9+()\- .]{7,30}$/)]],
+    address: ['', [Validators.required, Validators.maxLength(500)]],
+    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
+    role: ['USER' as ManagedUserRole, [Validators.required]]
   });
 
   save(): void {
@@ -33,14 +35,14 @@ export class UserCreate {
     }
 
     this.saving.set(true);
-    this.users.createUser(this.form.getRawValue()).subscribe({
+    this.users.createManagedUser(this.form.getRawValue()).subscribe({
       next: (response) => {
-        this.toast.show(`${response.user.username} created.`, 'success');
-        this.form.reset({ username: '', email: '', password: '', role: 'USER' });
+        this.toast.show(`${response.user.fullName || response.user.username} created as ${response.user.role}.`, 'success');
+        this.form.reset({ fullName: '', username: '', email: '', phone: '', address: '', password: '', role: 'USER' });
         this.saving.set(false);
       },
-      error: () => {
-        this.toast.show('Unable to create user.', 'error');
+      error: (err) => {
+        this.toast.show(err?.error?.message || 'Unable to create the account.', 'error');
         this.saving.set(false);
       }
     });

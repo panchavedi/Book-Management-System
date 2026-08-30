@@ -13,16 +13,11 @@ import java.time.LocalDateTime;
 public class BorrowingResponse {
 
     private Long id;
-
     private Long bookId;
-
     private String bookTitle;
-
     private Long borrowerId;
-
+    private UserResponse borrower;
     private LocalDateTime borrowedOn;
-
     private LocalDateTime returnedOn;
-
     private BorrowingStatus status;
 }

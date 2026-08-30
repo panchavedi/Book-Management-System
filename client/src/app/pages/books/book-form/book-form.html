@@ -1,32 +1,209 @@
 <section class="form-page">
-  <a routerLink="/books">Books</a>
-  <h1>{{ isEdit() ? 'Edit book' : 'New book' }}</h1>
+  <div class="form-head">
+    <div>
+      <a routerLink="/books">Books</a>
+      <span class="eyebrow">CATALOG MANAGEMENT</span>
+      <h1>
+        {{ isEdit() ? 'Refine a book' : 'Add a new book' }}
+      </h1>
+      <p>
+        Keep the catalog precise, readable and visually consistent.
+      </p>
+    </div>
+  </div>
 
   @if (loading()) {
-    <p class="state">Loading</p>
+    <div class="state">
+      Loading book…
+    </div>
   } @else {
-    <form [formGroup]="form" (ngSubmit)="save()">
-      <input formControlName="title" placeholder="Title" />
-      <input formControlName="isbn" placeholder="ISBN" />
-      <app-entity-typeahead
-        label="Author"
-        kind="author"
-        [selected]="selectedAuthor()"
-        (selectedChange)="selectedAuthor.set($event)"
-      />
-      <app-entity-typeahead
-        label="Category"
-        kind="category"
-        [selected]="selectedCategory()"
-        (selectedChange)="selectedCategory.set($event)"
-      />
-      <input formControlName="publisher" placeholder="Publisher" />
-      <input type="date" formControlName="printedOn" />
-      <input type="number" min="1" formControlName="totalCopies" placeholder="Total copies" />
-      <textarea formControlName="about" rows="6" placeholder="About"></textarea>
-      <button [disabled]="form.invalid || !selectedAuthor() || !selectedCategory() || saving()">
-        {{ saving() ? 'Saving' : 'Save' }}
-      </button>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="save()"
+      novalidate
+    >
+      <div class="form-grid">
+        <section class="fields-card">
+          <div class="card-title">
+            <div>
+              <span class="eyebrow">BOOK DETAILS</span>
+              <h2>Core information</h2>
+            </div>
+
+            <span>
+              <b>*</b>
+              Required
+            </span>
+          </div>
+
+          <div class="two">
+            <label>
+              Title <span>*</span>
+              <input
+                type="text"
+                formControlName="title"
+                placeholder="Book title"
+              />
+            </label>
+
+            <label>
+              ISBN <span>*</span>
+              <input
+                type="text"
+                formControlName="isbn"
+                placeholder="ISBN-13 or ISBN-10"
+              />
+            </label>
+          </div>
+
+          <div class="two">
+            <app-entity-typeahead
+              label="Author *"
+              kind="author"
+              [selected]="selectedAuthor()"
+              (selectedChange)="selectedAuthor.set($event)"
+            />
+
+            <app-entity-typeahead
+              label="Category *"
+              kind="category"
+              [selected]="selectedCategory()"
+              (selectedChange)="selectedCategory.set($event)"
+            />
+          </div>
+
+          <div class="two">
+            <label>
+              Publisher
+              <input
+                type="text"
+                formControlName="publisher"
+                placeholder="Publisher name"
+              />
+            </label>
+
+            <label>
+              Printed on
+              <input
+                type="date"
+                formControlName="printedOn"
+              />
+            </label>
+          </div>
+
+          <label>
+            Total copies <span>*</span>
+            <input
+              type="number"
+              min="1"
+              formControlName="totalCopies"
+            />
+          </label>
+
+          <label>
+            About the book
+            <textarea
+              rows="5"
+              formControlName="about"
+              placeholder="A concise description for readers"
+            ></textarea>
+          </label>
+        </section>
+
+        <section class="images-card">
+          <div class="card-title">
+            <div>
+              <span class="eyebrow">BOOK COVER</span>
+              <h2>Images</h2>
+            </div>
+          </div>
+
+          <p class="hint">
+            Add up to five JPG, PNG or GIF images.
+            The first image is the primary cover.
+          </p>
+
+          <label
+            class="upload-zone"
+            [class.limit]="previews().length >= 5"
+          >
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/gif"
+              multiple
+              [disabled]="previews().length >= 5"
+              (change)="onFilesSelected($event)"
+            />
+            <span class="upload-icon">＋</span>
+            <strong>
+              {{
+                previews().length >= 5
+                  ? 'Image limit reached'
+                  : 'Choose cover images'
+              }}
+            </strong>
+            <small>Up to 5 files · 10 MB each</small>
+          </label>
+
+          @if (previews().length) {
+            <div class="preview-grid">
+              @for (image of previews(); track image.src; let i = $index) {
+                <div class="preview">
+                  <img
+                    [src]="image.src"
+                    [alt]="image.name"
+                  />
+
+                  <button
+                    type="button"
+                    (click)="removeImage(i)"
+                    aria-label="Remove image"
+                  >
+                    ×
+                  </button>
+
+                  <span>
+                    {{ i === 0 ? 'Primary' : '' }}
+                  </span>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="placeholder-note">
+              No custom cover yet. The catalog will use a calm
+              title-based placeholder.
+            </div>
+          }
+        </section>
+      </div>
+
+      <div class="form-actions">
+        <a
+          class="cancel-action"
+          routerLink="/books"
+        >
+          Cancel
+        </a>
+
+        <button
+          class="primary-action"
+          type="submit"
+          [disabled]="
+            form.invalid ||
+            !selectedAuthor() ||
+            !selectedCategory() ||
+            saving()
+          "
+        >
+          {{
+            saving()
+              ? 'Saving…'
+              : isEdit()
+                ? 'Save changes'
+                : 'Add book'
+          }}
+        </button>
+      </div>
     </form>
   }
 </section>

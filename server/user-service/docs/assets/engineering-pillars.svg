@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#08111f"/><stop offset="55%" stop-color="#111c35"/><stop offset="100%" stop-color="#1b1235"/></linearGradient>
+ <linearGradient id="g1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient>
+ <linearGradient id="g2"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+ <linearGradient id="g3"><stop stop-color="#34d399"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"/></marker>
+</defs>
+<rect width="1200" height="650" rx="30" fill="url(#bg)"/>
+<circle cx="1080" cy="80" r="150" fill="#6366f1" opacity=".08"/>
+<circle cx="80" cy="570" r="180" fill="#06b6d4" opacity=".06"/>
+<text x="60" y="65" fill="#f8fafc" font-family="Arial, sans-serif" font-size="31" font-weight="700">Why This Implementation Is Robust</text>
+<text x="60" y="98" fill="#94a3b8" font-family="Arial, sans-serif" font-size="16">Six independent controls reinforce each other instead of depending on one mechanism.</text>
+
+<g filter="url(#shadow)">
+<rect x="70" y="145" width="300" height="145" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="70" y="145" width="300" height="6" rx="3" fill="url(#g1)"/>
+<text x="90" y="183" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">01 · Concurrency</text>
+<text x="90" y="211" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Pessimistic locks</text>
+<text x="90" y="233" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">atomic state transitions</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="450" y="145" width="300" height="145" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="450" y="145" width="300" height="6" rx="3" fill="url(#g1)"/>
+<text x="470" y="183" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">02 · Security</text>
+<text x="470" y="211" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">RS256 + role claims</text>
+<text x="470" y="233" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">revocation + statelessness</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="830" y="145" width="300" height="145" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="830" y="145" width="300" height="6" rx="3" fill="url(#g1)"/>
+<text x="850" y="183" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">03 · Integrity</text>
+<text x="850" y="211" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">DTO validation + DB</text>
+<text x="850" y="233" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">uniqueness constraints</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="70" y="365" width="300" height="145" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="70" y="365" width="300" height="6" rx="3" fill="url(#g1)"/>
+<text x="90" y="403" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">04 · Ownership</text>
+<text x="90" y="431" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">JWT userId drives</text>
+<text x="90" y="453" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">self-access decisions</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="450" y="365" width="300" height="145" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="450" y="365" width="300" height="6" rx="3" fill="url(#g1)"/>
+<text x="470" y="403" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">05 · Resilience</text>
+<text x="470" y="431" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Global exception mapping</text>
+<text x="470" y="453" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">rollback on failure</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="830" y="365" width="300" height="145" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="830" y="365" width="300" height="6" rx="3" fill="url(#g1)"/>
+<text x="850" y="403" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">06 · Operations</text>
+<text x="850" y="431" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Expired revocation cleanup</text>
+<text x="850" y="453" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">read-only transaction paths</text>
+</g>
+<text x="60" y="610" fill="#67e8f9" font-family="Arial, sans-serif" font-size="15" font-weight="700">The result is not merely functional CRUD—it is a set of explicit correctness boundaries.</text>
+</svg>

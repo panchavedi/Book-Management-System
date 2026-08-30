@@ -21,4 +21,10 @@ public interface BorrowingService {
     List<BorrowingResponse> findAllActiveBorrowings(
             String sort
     );
+
+    List<BorrowingResponse> findBorrowingHistoryByBook(
+            Long bookId
+    );
+
+    List<BorrowingResponse> findAllBorrowingHistory();
 }

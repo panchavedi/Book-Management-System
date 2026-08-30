@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="850" viewBox="0 0 1500 850">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#eef7ff"/><stop offset="55%" stop-color="#f9fdf8"/><stop offset="100%" stop-color="#fff3f7"/>
+  </linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity=".14"/>
+  </filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+    <path d="M0,0 L12,6 L0,12 z" fill="#51606f"/>
+  </marker>
+</defs>
+<rect width="1500" height="850" rx="28" fill="url(#bg)"/>
+<text x="70" y="82" font-family="Inter,Arial,sans-serif" font-size="38" font-weight="800" fill="#16324f">Role-Based Capability Model</text>
+<text x="70" y="120" font-family="Inter,Arial,sans-serif" font-size="19" fill="#52677a">The UI exposes different operational capabilities while the backend remains the final authorization boundary.</text>
+
+<line x1="370" y1="275" x2="500" y2="570" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="1130" y1="275" x2="1000" y2="520" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="750" y1="370" x2="505" y2="520" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="750" y1="370" x2="995" y2="520" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)">
+<rect x="80" y="180" width="290" height="190" rx="22" fill="#e6f4ff" stroke="#5aa8e6" stroke-width="3"/>
+<text x="104" y="218" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">USER</text>
+<text x="104" y="252" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">• Sign in
+• Browse/read books
+• Borrow &amp; return
+• View personal reading</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="605" y="180" width="290" height="190" rx="22" fill="#e9fbf2" stroke="#4db37a" stroke-width="3"/>
+<text x="629" y="218" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">LIBRARIAN / ADMIN</text>
+<text x="629" y="252" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">• Manage books
+• Add/update/delete
+• Manage authors/categories
+• Borrowing reports</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="1130" y="180" width="290" height="190" rx="22" fill="#f4ecff" stroke="#a56ee8" stroke-width="3"/>
+<text x="1154" y="218" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">SHARED SECURITY</text>
+<text x="1154" y="252" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">• RSA JWT
+• Role authorities
+• Ownership checks
+• Central error handling</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="330" y="520" width="350" height="160" rx="22" fill="#fff5df" stroke="#e5a83b" stroke-width="3"/>
+<text x="354" y="558" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">Library Domain</text>
+<text x="354" y="592" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Books • inventory • borrowing
+Images • search • history</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="820" y="520" width="350" height="160" rx="22" fill="#fff0f3" stroke="#df7187" stroke-width="3"/>
+<text x="844" y="558" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">User Domain</text>
+<text x="844" y="592" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Users • credentials
+Roles • token lifecycle</text>
+</g>
+<text x="70" y="810" font-family="Inter,Arial,sans-serif" font-size="16" fill="#718096">KnowledgeHub • Book Management System</text></svg>

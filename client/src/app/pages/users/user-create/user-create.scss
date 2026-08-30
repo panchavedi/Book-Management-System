@@ -1,66 +1,92 @@
-.user-page {
-  min-height: calc(100vh - 52px);
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 18px;
-  padding: 54px 22px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(0, 113, 227, 0.12), transparent 36%),
-    #ffffff;
+.page-shell {
+  max-width:1000px;
+  margin:0 auto;
+  padding:36px 34px 70px;
 }
-
-a {
-  color: #0071e3;
-  text-decoration: none;
-  font-weight: 700;
+.page-head {
+  margin-bottom:22px;
 }
-
-h1 {
-  margin: 0 0 12px;
-  color: #1d1d1f;
-  font-size: clamp(44px, 7vw, 80px);
-  line-height: 1;
+.page-head a {
+  color:#245f88;
+  text-decoration:none;
+  font-size:15px;
+  font-weight:800;
 }
-
-form {
-  width: min(430px, 100%);
-  display: grid;
-  gap: 12px;
-  padding: 28px;
-  border: 1px solid #e5e5ea;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.82);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.08);
+.eyebrow {
+  display:block;
+  margin-top:15px;
+  color:#7d97aa;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.18em;
 }
-
-input,
-select {
-  width: 100%;
-  border: 1px solid #d2d2d7;
-  border-radius: 14px;
-  padding: 15px 16px;
-  background: #ffffff;
-  color: #1d1d1f;
-  outline: none;
+.page-head h1 {
+  margin:10px 0 8px;
+  color:#193751;
+  font:700 42px/1.03 'Alegreya',Georgia,serif;
 }
-
-input:focus,
-select:focus {
-  border-color: #0071e3;
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+.page-head p {
+  margin:0;
+  color:#6e8799;
+  font-size:15px;
 }
-
-button {
-  border: 0;
-  border-radius: 999px;
-  padding: 14px;
-  background: #0071e3;
-  color: #ffffff;
-  font-weight: 700;
-  cursor: pointer;
+.page-shell form {
+  display:grid;
+  gap:17px;
 }
-
-button:disabled {
-  opacity: 0.55;
+.form-card {
+  display:grid;
+  gap:18px;
+  padding:25px;
+  border:1px solid #d9e7f0;
+  border-radius:20px;
+  background:linear-gradient(145deg,#fff,#f8fcff);
+  box-shadow:0 16px 42px rgba(46,96,130,.06);
+}
+.section-title {
+  padding-top:1px;
+  color:#35556e;
+  font-size:16px;
+  font-weight:900;
+}
+.two {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+label {
+  display:grid;
+  gap:7px;
+  color:#3b5b72;
+  font-size:14px;
+  font-weight:800;
+}
+label span {
+  color:#c44c62;
+}
+.form-footer {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-top:2px;
+}
+.form-footer span {
+  color:#6f8798;
+  font-size:13px;
+}
+.form-footer b {
+  color:#c84e63;
+}
+@media(max-width:700px) {
+  .page-shell {
+    padding:28px 18px 55px;
+  }
+  .two {
+    grid-template-columns:1fr;
+  }
+  .form-footer {
+    align-items:stretch;
+    flex-direction:column;
+    gap:12px;
+  }
 }

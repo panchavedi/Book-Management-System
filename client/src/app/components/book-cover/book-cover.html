@@ -1,0 +1,11 @@
+<div class="cover" [class.small]="size === 'small'" [class.medium]="size === 'medium'" [class.large]="size === 'large'">
+  @if (imageUrl(); as image) {
+  <img [src]="image" [alt]="title + ' cover'" />
+  } @else {
+  <div class="placeholder" [attr.aria-label]="title + ' cover placeholder'">
+    <span>{{ title || 'Book' }}</span>
+  </div>
+  }
+  <div class="shine" aria-hidden="true">
+  </div>
+</div>

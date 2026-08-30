@@ -21,7 +21,11 @@ public class GatewayRoutesConfig {
                 path("/books")
                     .or(path("/books/**"))
                     .or(path("/borrow"))
-                    .or(path("/borrow/**")),
+                    .or(path("/borrow/**"))
+                    .or(path("/authors"))
+                    .or(path("/authors/**"))
+                    .or(path("/categories"))
+                    .or(path("/categories/**")),
                 http()
             )
                 .filter(lb("LIBRARY-SERVICE"))
@@ -32,7 +36,8 @@ public class GatewayRoutesConfig {
     @Bean
     public RouterFunction<ServerResponse> userServiceRoute() {
         return route("user-service")
-                .route(path("/api/auth").or(path("/api/auth/**")), http())
+                .route(path("/auth")
+                        .or(path("/auth/**")), http())
                 .filter(lb("USERS-ERVICE"))
                 .after(dedupeResponseHeader("Access-Control-Allow-Origin Access-Control-Allow-Credentials"))
                 .build();

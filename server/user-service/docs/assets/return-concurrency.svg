@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#08111f"/><stop offset="55%" stop-color="#111c35"/><stop offset="100%" stop-color="#1b1235"/></linearGradient>
+ <linearGradient id="g1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient>
+ <linearGradient id="g2"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+ <linearGradient id="g3"><stop stop-color="#34d399"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"/></marker>
+</defs>
+<rect width="1200" height="650" rx="30" fill="url(#bg)"/>
+<circle cx="1080" cy="80" r="150" fill="#6366f1" opacity=".08"/>
+<circle cx="80" cy="570" r="180" fill="#06b6d4" opacity=".06"/>
+<text x="60" y="65" fill="#f8fafc" font-family="Arial, sans-serif" font-size="31" font-weight="700">Return Strategy — Lock Both Sides of the Relationship</text>
+<text x="60" y="98" fill="#94a3b8" font-family="Arial, sans-serif" font-size="16">Return correctness requires inventory and the active borrowing record to agree.</text>
+
+<g filter="url(#shadow)">
+<rect x="60" y="155" width="235" height="155" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="60" y="155" width="235" height="6" rx="3" fill="url(#g1)"/>
+<text x="80" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Return Request</text>
+<text x="80" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Identify user + book</text>
+<text x="80" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Find active borrowing</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="275" y="155" width="235" height="155" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="275" y="155" width="235" height="6" rx="3" fill="url(#g1)"/>
+<text x="295" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Lock Inventory</text>
+<text x="295" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">PESSIMISTIC_WRITE</text>
+<text x="295" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Prevent competing borrow</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="490" y="155" width="235" height="155" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="490" y="155" width="235" height="6" rx="3" fill="url(#g1)"/>
+<text x="510" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Lock Borrowing</text>
+<text x="510" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">PESSIMISTIC_WRITE</text>
+<text x="510" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Prevent duplicate return</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="705" y="155" width="235" height="155" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="705" y="155" width="235" height="6" rx="3" fill="url(#g1)"/>
+<text x="725" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">State Transition</text>
+<text x="725" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">available += 1</text>
+<text x="725" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">returnedAt = now</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="920" y="155" width="220" height="155" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="920" y="155" width="220" height="6" rx="3" fill="url(#g1)"/>
+<text x="940" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Commit</text>
+<text x="940" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Both changes commit</text>
+<text x="940" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">or both roll back</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="190" y="390" width="260" height="145" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="190" y="390" width="260" height="6" rx="3" fill="url(#g1)"/>
+<text x="210" y="428" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Duplicate Return</text>
+<text x="210" y="456" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Second request cannot</text>
+<text x="210" y="478" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">silently return the</text>
+<text x="210" y="500" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">same active record</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="470" y="390" width="260" height="145" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="470" y="390" width="260" height="6" rx="3" fill="url(#g1)"/>
+<text x="490" y="428" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Inventory Safety</text>
+<text x="490" y="456" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">No lost update between</text>
+<text x="490" y="478" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">borrow and return</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="750" y="390" width="260" height="145" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="750" y="390" width="260" height="6" rx="3" fill="url(#g1)"/>
+<text x="770" y="428" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Business Truth</text>
+<text x="770" y="456" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Inventory and borrowing</text>
+<text x="770" y="478" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">history stay aligned</text>
+</g>
+<line x1="295" y1="232" x2="275" y2="232" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="510" y1="232" x2="490" y2="232" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="745" y1="232" x2="725" y2="232" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="945" y1="232" x2="920" y2="232" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="420" y1="462" x2="470" y2="462" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="730" y1="462" x2="750" y2="462" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="60" y="610" fill="#67e8f9" font-family="Arial, sans-serif" font-size="15" font-weight="700">Two pessimistic locks make the relationship itself concurrency-safe.</text>
+</svg>

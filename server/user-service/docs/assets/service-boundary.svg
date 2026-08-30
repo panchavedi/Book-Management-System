@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#08111f"/><stop offset="55%" stop-color="#111c35"/><stop offset="100%" stop-color="#1b1235"/></linearGradient>
+ <linearGradient id="g1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient>
+ <linearGradient id="g2"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+ <linearGradient id="g3"><stop stop-color="#34d399"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"/></marker>
+</defs>
+<rect width="1200" height="650" rx="30" fill="url(#bg)"/>
+<circle cx="1080" cy="80" r="150" fill="#6366f1" opacity=".08"/>
+<circle cx="80" cy="570" r="180" fill="#06b6d4" opacity=".06"/>
+<text x="60" y="65" fill="#f8fafc" font-family="Arial, sans-serif" font-size="31" font-weight="700">Microservice Boundary — User Service as an Identity Authority</text>
+<text x="60" y="98" fill="#94a3b8" font-family="Arial, sans-serif" font-size="16">Other services consume a stable identity contract instead of owning user credentials.</text>
+
+<g filter="url(#shadow)">
+<rect x="60" y="160" width="230" height="155" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="60" y="160" width="230" height="6" rx="3" fill="url(#g1)"/>
+<text x="80" y="198" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Library Client</text>
+<text x="80" y="226" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Needs borrower identity</text>
+<text x="80" y="248" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">and authorization</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="330" y="160" width="230" height="155" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="330" y="160" width="230" height="6" rx="3" fill="url(#g1)"/>
+<text x="350" y="198" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">User Service</text>
+<text x="350" y="226" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Authenticates</text>
+<text x="350" y="248" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">issues JWT</text>
+<text x="350" y="270" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">owns user records</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="600" y="160" width="230" height="155" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="600" y="160" width="230" height="6" rx="3" fill="url(#g1)"/>
+<text x="620" y="198" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Signed Contract</text>
+<text x="620" y="226" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">subject</text>
+<text x="620" y="248" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">userId</text>
+<text x="620" y="270" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">role</text>
+<text x="620" y="292" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">issuer / audience</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="870" y="160" width="270" height="155" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="870" y="160" width="270" height="6" rx="3" fill="url(#g1)"/>
+<text x="890" y="198" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Downstream Service</text>
+<text x="890" y="226" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Validates token locally</text>
+<text x="890" y="248" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">uses claims for policy</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="210" y="405" width="250" height="140" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="210" y="405" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="230" y="443" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">No Shared Session</text>
+<text x="230" y="471" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">No server-side login</text>
+<text x="230" y="493" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">session required</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="490" y="405" width="250" height="140" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="490" y="405" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="510" y="443" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">No Password Sharing</text>
+<text x="510" y="471" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Credentials stay inside</text>
+<text x="510" y="493" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">identity service</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="770" y="405" width="250" height="140" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="770" y="405" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="790" y="443" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Clear Ownership</text>
+<text x="790" y="471" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">User service owns</text>
+<text x="790" y="493" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">identity lifecycle</text>
+</g>
+<line x1="290" y1="237" x2="330" y2="237" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="560" y1="237" x2="600" y2="237" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="830" y1="237" x2="870" y2="237" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="460" y1="475" x2="490" y2="475" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="740" y1="475" x2="770" y2="475" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="60" y="610" fill="#67e8f9" font-family="Arial, sans-serif" font-size="15" font-weight="700">Identity is centralized; request processing remains stateless.</text>
+</svg>

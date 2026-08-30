@@ -1,17 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Book } from '../../../models/book.model';
+import { Book, Borrowing } from '../../../models/book.model';
 import { AuthService } from '../../../services/auth.service';
 import { BookService } from '../../../services/book.service';
 import { BorrowingStateService } from '../../../services/borrowing-state.service';
 import { ToastService } from '../../../services/toast.service';
 import { BorrowingApiService } from '../../../services/borrowing-api.service';
-import { Borrowing } from '../../../models/book.model';
+import { BookCoverComponent } from '../../../components/book-cover/book-cover';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, BookCoverComponent],
   templateUrl: './book-detail.html',
   styleUrl: './book-detail.scss'
 })
@@ -20,16 +20,16 @@ export class BookDetail implements OnInit {
   private readonly booksApi = inject(BookService);
   private readonly toast = inject(ToastService);
   private readonly borrowingsApi = inject(BorrowingApiService);
+
   readonly auth = inject(AuthService);
   readonly borrowing = inject(BorrowingStateService);
-
   readonly book = signal<Book | null>(null);
   readonly loading = signal(true);
   readonly working = signal(false);
-  readonly isBorrowedByMe = computed(() => this.book()?.borrowed === true);
   readonly activeBorrowers = signal<Borrowing[]>([]);
   readonly borrowersLoading = signal(false);
   readonly isStaff = computed(() => this.auth.isStaff());
+  readonly isBorrowedByMe = computed(() => this.book()?.borrowed === true);
   readonly canBorrow = computed(() => {
     const book = this.book();
     return !!book && this.borrowing.canBorrow(book);
@@ -47,9 +47,9 @@ export class BookDetail implements OnInit {
     const book = this.book();
     if (!book || !this.canBorrow() || this.working()) {
       if (book) {
-        const message = this.borrowing.restrictionMessage(book);
-        if (message) {
-          this.toast.show(message, 'info');
+        const restriction = this.borrowing.restrictionMessage(book);
+        if (restriction) {
+          this.toast.show(restriction, 'info');
         }
       }
       return;
@@ -57,14 +57,13 @@ export class BookDetail implements OnInit {
 
     this.working.set(true);
     this.booksApi.borrow(book.id).subscribe({
-      next: (borrowing) => {
-        this.borrowing.markBorrowed(book, borrowing);
-        this.refreshAfterAction('Book borrowed successfully.');
+      next: (response) => {
+        this.borrowing.markBorrowed(book, response);
+        this.refresh('Book borrowed successfully.');
       },
-      error: (err) => {
+      error: (error) => {
         this.working.set(false);
-        const msg = err?.error?.message || err?.error?.detail || 'Could not borrow this book.';
-        this.toast.show(msg, 'error');
+        this.toast.show(error?.error?.message || 'Could not borrow this book.', 'error');
       }
     });
   }
@@ -79,12 +78,11 @@ export class BookDetail implements OnInit {
     this.booksApi.returnBook(book.id).subscribe({
       next: () => {
         this.borrowing.markReturned(book.id);
-        this.refreshAfterAction('Book returned. You can now borrow another book.');
+        this.refresh('Book returned.');
       },
-      error: (err) => {
+      error: (error) => {
         this.working.set(false);
-        const msg = err?.error?.message || err?.error?.detail || 'Could not return this book.';
-        this.toast.show(msg, 'error');
+        this.toast.show(error?.error?.message || 'Could not return this book.', 'error');
       }
     });
   }
@@ -93,8 +91,8 @@ export class BookDetail implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.booksApi.get(id).subscribe({
       next: (book) => {
-        this.borrowing.syncBook(book);
         this.book.set(book);
+        this.borrowing.syncBook(book);
         this.loading.set(false);
         if (this.isStaff()) {
           this.loadActiveBorrowers(book.id);
@@ -107,22 +105,21 @@ export class BookDetail implements OnInit {
     });
   }
 
-  private loadActiveBorrowers(bookId: number): void {
+  private loadActiveBorrowers(id: number): void {
     this.borrowersLoading.set(true);
-    this.borrowingsApi.activeByBook(bookId).subscribe({
-      next: (items) => {
-        this.activeBorrowers.set(items);
+    this.borrowingsApi.activeByBook(id).subscribe({
+      next: (borrowings) => {
+        this.activeBorrowers.set(borrowings);
         this.borrowersLoading.set(false);
       },
       error: () => {
         this.activeBorrowers.set([]);
         this.borrowersLoading.set(false);
-        this.toast.show('Could not load active borrowers for this book.', 'error');
       }
     });
   }
 
-  private refreshAfterAction(message: string): void {
+  private refresh(message: string): void {
     const book = this.book();
     if (!book) {
       this.working.set(false);
@@ -130,9 +127,9 @@ export class BookDetail implements OnInit {
     }
 
     this.booksApi.get(book.id).subscribe({
-      next: (updated) => {
-        this.borrowing.syncBook(updated);
-        this.book.set(updated);
+      next: (nextBook) => {
+        this.book.set(nextBook);
+        this.borrowing.syncBook(nextBook);
         this.working.set(false);
         this.toast.show(message, 'success');
       },

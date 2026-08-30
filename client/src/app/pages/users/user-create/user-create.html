@@ -1,16 +1,53 @@
-<section class="user-page">
-  <a routerLink="/dashboard">Library</a>
-  <h1>New user</h1>
-
-  <form [formGroup]="form" (ngSubmit)="save()">
-    <input formControlName="username" placeholder="Username" />
-    <input formControlName="email" placeholder="Email" />
-    <input type="password" formControlName="password" placeholder="Password" />
-    <select formControlName="role">
-      @for (role of roles; track role) {
-        <option [value]="role">{{ role }}</option>
-      }
-    </select>
-    <button [disabled]="saving()">{{ saving() ? 'Creating' : 'Create' }}</button>
+<section class="page-shell">
+  <div class="page-head">
+    <div>
+      <a routerLink="/dashboard">Dashboard</a>
+      <span class="eyebrow">ADMIN / PEOPLE</span>
+      <h1>Add a person</h1>
+      <p>Administrators can create readers, librarians, authors and other administrators.</p>
+    </div>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <div class="form-card">
+      <div class="section-title">Profile</div>
+      <div class="two">
+        <label>Full name <span>*</span>
+          <input formControlName="fullName" autocomplete="name" placeholder="Full name">
+        </label>
+        <label>Username <span>*</span>
+          <input formControlName="username" autocomplete="username" placeholder="Username">
+        </label>
+      </div>
+      <div class="two">
+        <label>Email <span>*</span>
+          <input type="email" formControlName="email" autocomplete="email" placeholder="name@example.com">
+        </label>
+        <label>Phone <span>*</span>
+          <input type="tel" formControlName="phone" autocomplete="tel" placeholder="+91 98765 43210">
+        </label>
+      </div>
+      <label>Address <span>*</span>
+        <textarea formControlName="address" rows="3" autocomplete="street-address" placeholder="Address">
+        </textarea>
+      </label>
+      <div class="section-title">Access</div>
+      <div class="two">
+        <label>Role <span>*</span>
+          <select formControlName="role">
+            @for (role of roles; track role) {
+            <option [value]="role">{{ role }}</option>
+            }
+          </select>
+        </label>
+        <label>Password <span>*</span>
+          <input type="password" formControlName="password" autocomplete="new-password" placeholder="At least 8 characters">
+        </label>
+      </div>
+    </div>
+    <div class="form-footer">
+      <span>
+        <b>*</b> Required fields</span>
+      <button class="primary-action" type="submit" [disabled]="form.invalid || saving()">{{ saving() ? 'Creating…' : 'Create account' }}</button>
+    </div>
   </form>
 </section>

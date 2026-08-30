@@ -2,10 +2,13 @@ package com.bms.library.service;
 
 import com.bms.library.dto.*;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface BookService {
 
     BookResponse create(BookRequest request);
+
+    BookResponse create(BookRequest request, List<MultipartFile> images);
 
     List<BookResponse> findAll();
 
@@ -25,6 +28,8 @@ public interface BookService {
             Long id,
             BookRequest request
     );
+
+    BookResponse update(Long id, BookRequest request, List<MultipartFile> images);
 
     void delete(Long id);
 

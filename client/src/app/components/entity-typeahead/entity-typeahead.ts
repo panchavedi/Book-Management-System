@@ -45,9 +45,10 @@ export class EntityTypeaheadComponent implements OnChanges {
           this.options.set(options);
           this.loading.set(false);
         },
-        error: () => {
+        error: (error) => {
           this.options.set([]);
           this.loading.set(false);
+          this.toast.show(error?.error?.message || `Could not load ${this.title().toLowerCase()}s.`, 'error');
         }
       });
 

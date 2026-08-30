@@ -29,6 +29,7 @@ public class AuthorController {
 
     @GetMapping
     public ResponseEntity<List<AuthorResponse>> findAll() {
+
         return ResponseEntity.ok(authorService.findAll());
     }
 

@@ -44,10 +44,6 @@ public class Borrowing {
     )
     private Book book;
 
-    /*
-     * Owned by user-service.
-     * No local FK or JPA relationship.
-     */
     @Column(
             name = "borrower_id",
             nullable = false
@@ -95,6 +91,7 @@ public class Borrowing {
 
     @PreUpdate
     protected void onUpdate() {
+
         updatedAt = LocalDateTime.now();
     }
 

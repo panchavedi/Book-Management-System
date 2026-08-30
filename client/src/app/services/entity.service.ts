@@ -8,7 +8,7 @@ type EntityKind = 'authors' | 'categories';
 @Injectable({ providedIn: 'root' })
 export class EntityService {
   private readonly http = inject(HttpClient);
-  private readonly api = 'http://localhost:8082';
+  private readonly api = 'http://localhost:8085';
 
   listAuthors(): Observable<Author[]> {
     return this.http.get<Author[]>(`${this.api}/authors`);

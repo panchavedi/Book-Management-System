@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#08111f"/><stop offset="55%" stop-color="#111c35"/><stop offset="100%" stop-color="#1b1235"/></linearGradient>
+ <linearGradient id="g1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient>
+ <linearGradient id="g2"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+ <linearGradient id="g3"><stop stop-color="#34d399"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"/></marker>
+</defs>
+<rect width="1200" height="650" rx="30" fill="url(#bg)"/>
+<circle cx="1080" cy="80" r="150" fill="#6366f1" opacity=".08"/>
+<circle cx="80" cy="570" r="180" fill="#06b6d4" opacity=".06"/>
+<text x="60" y="65" fill="#f8fafc" font-family="Arial, sans-serif" font-size="31" font-weight="700">Concurrency Strategy — Borrowing Is a State Transition</text>
+<text x="60" y="98" fill="#94a3b8" font-family="Arial, sans-serif" font-size="16">Two borrowers can race; only one is allowed to win.</text>
+
+<g filter="url(#shadow)">
+<rect x="55" y="150" width="250" height="165" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="55" y="150" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="75" y="188" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Request A</text>
+<text x="75" y="216" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">BEGIN TX</text>
+<text x="75" y="238" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Lock book row</text>
+<text x="75" y="260" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Read available=true</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="325" y="150" width="250" height="165" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="325" y="150" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="345" y="188" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Database Lock</text>
+<text x="345" y="216" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">PESSIMISTIC_WRITE</text>
+<text x="345" y="238" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Same row = serialized</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="595" y="150" width="250" height="165" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="595" y="150" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="615" y="188" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Request B</text>
+<text x="615" y="216" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Waits for the lock</text>
+<text x="615" y="238" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Cannot read-and-win</text>
+<text x="615" y="260" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">at the same time</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="865" y="150" width="280" height="165" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="865" y="150" width="280" height="6" rx="3" fill="url(#g1)"/>
+<text x="885" y="188" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Commit</text>
+<text x="885" y="216" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">A decrements stock</text>
+<text x="885" y="238" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">B re-checks state</text>
+<text x="885" y="260" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">and receives failure</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="180" y="405" width="250" height="140" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="180" y="405" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="200" y="443" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Invariant</text>
+<text x="200" y="471" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">available ≥ 0</text>
+<text x="200" y="493" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Borrowing consumes</text>
+<text x="200" y="515" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">one unit atomically</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="500" y="405" width="250" height="140" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="500" y="405" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="520" y="443" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Audit State</text>
+<text x="520" y="471" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Borrowing record is</text>
+<text x="520" y="493" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">created in the same</text>
+<text x="520" y="515" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">transaction</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="820" y="405" width="250" height="140" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="820" y="405" width="250" height="6" rx="3" fill="url(#g1)"/>
+<text x="840" y="443" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Failure Safety</text>
+<text x="840" y="471" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">Exception → rollback</text>
+<text x="840" y="493" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">No partial inventory</text>
+<text x="840" y="515" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">mutation</text>
+</g>
+<line x1="305" y1="232" x2="325" y2="232" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="575" y1="232" x2="595" y2="232" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="845" y1="232" x2="865" y2="232" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="305" y1="475" x2="500" y2="475" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="750" y1="475" x2="820" y2="475" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="60" y="610" fill="#67e8f9" font-family="Arial, sans-serif" font-size="15" font-weight="700">The database lock is the final arbiter; the service layer orchestrates the transition.</text>
+</svg>

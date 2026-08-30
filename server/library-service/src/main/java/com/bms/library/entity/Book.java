@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @Table(
@@ -97,10 +98,24 @@ public class Book {
 
     @OneToMany(
             mappedBy = "book",
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
+    @BatchSize(size = 50)
     @Builder.Default
     private List<Borrowing> borrowings = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "book",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @BatchSize(size = 50)
+    @OrderBy("displayOrder ASC")
+    @Builder.Default
+    private List<BookImage> images = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

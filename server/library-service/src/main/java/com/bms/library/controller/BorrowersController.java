@@ -18,8 +18,7 @@ public class BorrowersController {
     private final BorrowingService borrowingService;
 
     @GetMapping("/me")
-    public ResponseEntity<List<BorrowingResponse>>
-    findMyBorrowingHistory(
+    public ResponseEntity<List<BorrowingResponse>> findMyBorrowingHistory(
             Authentication authentication
     ) {
 
@@ -27,15 +26,12 @@ public class BorrowersController {
                 CurrentUser.getUserId(authentication);
 
         return ResponseEntity.ok(
-                borrowingService.findMyBorrowingHistory(
-                        borrowerId
-                )
+                borrowingService.findMyBorrowingHistory(borrowerId)
         );
     }
 
     @GetMapping("/me/books")
-    public ResponseEntity<List<BorrowingResponse>>
-    findMyActiveBorrowings(
+    public ResponseEntity<List<BorrowingResponse>> findMyActiveBorrowings(
             Authentication authentication
     ) {
 
@@ -43,15 +39,12 @@ public class BorrowersController {
                 CurrentUser.getUserId(authentication);
 
         return ResponseEntity.ok(
-                borrowingService.findMyActiveBorrowings(
-                        borrowerId
-                )
+                borrowingService.findMyActiveBorrowings(borrowerId)
         );
     }
 
     @GetMapping("/books/{bookId}")
-    public ResponseEntity<List<BorrowingResponse>>
-    findActiveBorrowersByBook(
+    public ResponseEntity<List<BorrowingResponse>> findActiveBorrowersByBook(
             @PathVariable Long bookId,
             Authentication authentication
     ) {
@@ -59,28 +52,45 @@ public class BorrowersController {
         CurrentUser.requireAdmin(authentication);
 
         return ResponseEntity.ok(
-                borrowingService.findActiveBorrowersByBook(
-                        bookId
-                )
+                borrowingService.findActiveBorrowersByBook(bookId)
         );
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<BorrowingResponse>>
-    findAllActiveBorrowings(
-            @RequestParam(
-                    defaultValue = "desc"
-            )
-            String sort,
+    @GetMapping("/books/{bookId}/history")
+    public ResponseEntity<List<BorrowingResponse>> findBorrowingHistoryByBook(
+            @PathVariable Long bookId,
             Authentication authentication
     ) {
 
         CurrentUser.requireAdmin(authentication);
 
         return ResponseEntity.ok(
-                borrowingService.findAllActiveBorrowings(
-                        sort
-                )
+                borrowingService.findBorrowingHistoryByBook(bookId)
+        );
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<BorrowingResponse>> findAllActiveBorrowings(
+            @RequestParam(defaultValue = "desc") String sort,
+            Authentication authentication
+    ) {
+
+        CurrentUser.requireAdmin(authentication);
+
+        return ResponseEntity.ok(
+                borrowingService.findAllActiveBorrowings(sort)
+        );
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<BorrowingResponse>> findAllBorrowingHistory(
+            Authentication authentication
+    ) {
+
+        CurrentUser.requireAdmin(authentication);
+
+        return ResponseEntity.ok(
+                borrowingService.findAllBorrowingHistory()
         );
     }
 }

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="480" viewBox="0 0 1400 480">
+<rect width="1400" height="480" rx="30" fill="#07111f"/>
+<text x="60" y="62" fill="#f8fafc" font-family="Arial" font-size="32" font-weight="700">Race-safe Borrow / Return Strategy</text>
+<g font-family="Arial" text-anchor="middle">
+<rect x="60" y="140" width="205" height="150" rx="22" fill="#2563eb"/><text x="162" y="195" fill="white" font-size="22" font-weight="700">Authenticated</text><text x="162" y="225" fill="white" font-size="22" font-weight="700">Request</text><text x="162" y="262" fill="#dbeafe" font-size="16">userId from JWT</text>
+<rect x="330" y="140" width="220" height="150" rx="22" fill="#7c3aed"/><text x="440" y="195" fill="white" font-size="22" font-weight="700">Lock Book Row</text><text x="440" y="232" fill="#ede9fe" font-size="16">PESSIMISTIC_WRITE</text><text x="440" y="260" fill="#ede9fe" font-size="16">same book serializes</text>
+<rect x="615" y="140" width="220" height="150" rx="22" fill="#dc2626"/><text x="725" y="195" fill="white" font-size="22" font-weight="700">Validate</text><text x="725" y="230" fill="#fee2e2" font-size="16">copies available?</text><text x="725" y="258" fill="#fee2e2" font-size="16">already borrowed?</text>
+<rect x="900" y="140" width="210" height="150" rx="22" fill="#059669"/><text x="1005" y="195" fill="white" font-size="22" font-weight="700">Mutate State</text><text x="1005" y="230" fill="#d1fae5" font-size="16">availableCopies ± 1</text><text x="1005" y="258" fill="#d1fae5" font-size="16">borrowing status</text>
+<rect x="1175" y="140" width="165" height="150" rx="22" fill="#ea580c"/><text x="1257" y="195" fill="white" font-size="22" font-weight="700">Commit</text><text x="1257" y="230" fill="#ffedd5" font-size="16">atomic DB</text><text x="1257" y="258" fill="#ffedd5" font-size="16">transaction</text>
+</g>
+<g stroke="#94a3b8" stroke-width="4" fill="none"><path d="M265 215 H330"/><path d="M550 215 H615"/><path d="M835 215 H900"/><path d="M1110 215 H1175"/></g>
+<g fill="#94a3b8"><polygon points="322,207 338,215 322,223"/><polygon points="607,207 623,215 607,223"/><polygon points="892,207 908,215 892,223"/><polygon points="1167,207 1183,215 1167,223"/></g>
+<rect x="330" y="340" width="780" height="70" rx="18" fill="#111827" stroke="#334155"/><text x="720" y="383" text-anchor="middle" fill="#cbd5e1" font-family="Arial" font-size="17">Result: no overselling of copies, no double-return, and no client-supplied borrower identity.</text>
+</svg>

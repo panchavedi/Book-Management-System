@@ -22,6 +22,9 @@ public class User {
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
+    @Column(nullable = false, length = 30)
+    private String phone;
+
     @Column(nullable = false)
     private String password;
 
@@ -29,5 +32,12 @@ public class User {
     private String role;
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean enabled = true;
+
+    @Column(name = "full_name", length = 150)
+    private String fullName;
+
+    @Column(length = 500)
+    private String address;
 }

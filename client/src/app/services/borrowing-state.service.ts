@@ -21,26 +21,14 @@ export class BorrowingStateService {
   readonly activeBorrowingCount = computed(() => this.activeBorrowings().length);
   readonly hasActiveBorrowing = computed(() => this.activeBorrowingCount() > 0);
   readonly hasReachedLimit = computed(() => this.activeBorrowingCount() >= this.maxBooks);
-  readonly borrowedCategoryId = computed(() => {
-    const categoryId = this.activeBorrowings()[0]?.categoryId;
-    return categoryId && categoryId > 0 ? categoryId : null;
-  });
-  readonly borrowedCategoryName = computed(() => {
-    const category = this.activeBorrowings()[0];
-    return category?.categoryId && category.categoryId > 0 ? category.categoryName : null;
-  });
-
   isBorrowed(bookId: number): boolean {
     return this.activeBorrowings().some((item) => item.bookId === bookId);
   }
 
   canBorrow(book: Book): boolean {
-    if (this.isBorrowed(book.id) || book.availableCopies <= 0 || this.hasReachedLimit()) {
-      return false;
-    }
-
-    const categoryId = this.borrowedCategoryId();
-    return categoryId === null || categoryId === book.categoryId;
+    return !this.isBorrowed(book.id)
+      && book.availableCopies > 0
+      && !this.hasReachedLimit();
   }
 
   restrictionMessage(book: Book): string | null {
@@ -56,14 +44,8 @@ export class BorrowingStateService {
       return 'You have reached the 5-book borrowing limit. Return a book before borrowing another.';
     }
 
-    const categoryName = this.borrowedCategoryName();
-    if (categoryName && this.borrowedCategoryId() !== book.categoryId) {
-      return `Your current borrowing category is ${categoryName}. Return all ${categoryName} books before choosing another category.`;
-    }
-
     return null;
   }
-
 
   syncBook(book: Book): void {
     const current = this.activeBorrowings();
@@ -99,7 +81,7 @@ export class BorrowingStateService {
         title: borrowing.bookTitle || existing?.title || `Book #${borrowing.bookId}`,
         isbn: borrowing.isbn ?? existing?.isbn ?? '',
         categoryId: borrowing.categoryId ?? existing?.categoryId ?? 0,
-        categoryName: borrowing.categoryName ?? existing?.categoryName ?? 'Current category',
+        categoryName: borrowing.categoryName ?? existing?.categoryName ?? 'Category',
         borrowedOn: borrowing.borrowedOn
       };
     });
@@ -176,7 +158,7 @@ export class BorrowingStateService {
           title: legacy.title,
           isbn: legacy.isbn ?? '',
           categoryId: legacy.categoryId ?? 0,
-          categoryName: legacy.categoryName ?? 'Current category',
+          categoryName: legacy.categoryName ?? 'Category',
           borrowedOn: legacy.borrowedOn ?? new Date().toISOString()
         };
         this.persist([migrated]);

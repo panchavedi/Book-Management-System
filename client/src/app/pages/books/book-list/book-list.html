@@ -1,66 +1,87 @@
 <section class="catalog">
-  <header>
-    <div class="title-wrap">
-      <h1>Books</h1>
-      <span class="result-count">{{ books().length }} result{{ books().length === 1 ? '' : 's' }}</span>
-    </div>
-
-    <div class="toolbar">
-      <div class="unified-search" [class.filter-active]="!!activeFilter()">
-        <form [formGroup]="filters" class="search-form">
-          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input formControlName="keyword" [placeholder]="activeFilter() === 'author' ? 'Search authors...' : activeFilter() === 'category' ? 'Search categories...' : 'Search books, authors, categories...'" aria-label="Search books, authors or categories" autocomplete="off" />
-        </form>
-
-        <div class="filter-bar" role="group" aria-label="Book filters">
-          <button type="button" class="filter-chip" [class.active]="activeFilter() === 'author'" (click)="toggleFilter('author')">Author</button>
-          <button type="button" class="filter-chip" [class.active]="activeFilter() === 'category'" (click)="toggleFilter('category')">Category</button>
-        </div>
-
-        @if (activeFilter() && (entityOptions().length || entityLoading())) {
-          <div class="entity-results">
-            @if (entityLoading()) {
-              <div class="entity-loading">Searching {{ activeFilter() }}s…</div>
-            } @else {
-              @for (option of entityOptions(); track option.id) {
-                <button type="button" class="entity-option" (click)="selectEntity(option)">
-                  <strong>{{ option.name }}</strong>
-                  <small>{{ activeFilter() }}</small>
-                </button>
-              }
-            }
-          </div>
-        }
-      </div>
-
-      @if (auth.isAdmin()) {
-        <a class="add-book" routerLink="/books/new">Add book</a>
-      }
-    </div>
-  </header>
-
-
-  <aside class="borrowing-policy">
-    <div class="policy-icon">5</div>
+  <header class="catalog-head">
     <div>
-      <strong>Borrow up to {{ borrowing.maxBooks }} books</strong>
-      @if (borrowing.borrowedCategoryName(); as category) {
-        <span>Category locked to <b>{{ category }}</b> · {{ borrowing.activeBorrowingCount() }}/{{ borrowing.maxBooks }} used</span>
-      } @else {
-        <span>Choose one category. All borrowed books must be from that category.</span>
-      }
+      <span class="eyebrow">THE COLLECTION</span>
+      <h1>Discover books</h1>
+      <p>Browse the catalog and find something worth taking home.</p>
     </div>
-  </aside>
-
-  @if (loading()) {
-    <p class="state">Loading books…</p>
-  } @else if (books().length) {
-    <div class="grid">
-      @for (book of books(); track book.id) {
-        <app-book-card [book]="book" [admin]="auth.isStaff()" (deleteBook)="delete($event)" />
-      }
-    </div>
-  } @else {
-    <p class="state">No books found.</p>
+    @if (auth.isAdmin()) {
+    <a class="add-book" routerLink="/books/new">+ Add book</a>
+    }
+  </header>
+  <div class="toolbar">
+    <div class="unified-search">
+      <form [formGroup]="filters" class="search-form">
+        <span>⌕</span>
+        <input
+        formControlName="keyword"
+        [placeholder]="activeFilter() === 'author'
+        ? 'Search authors…'
+        : activeFilter() === 'category'
+        ? 'Search categories…'
+        : 'Search by title, author or ISBN…'"
+        />
+      </form>
+      <div class="filter-bar">
+        <button
+        class="filter-chip"
+        [class.active]="activeFilter() === 'author'"
+        type="button"
+        (click)="toggleFilter('author')"
+        >
+        Author
+      </button>
+      <button
+      class="filter-chip"
+      [class.active]="activeFilter() === 'category'"
+      type="button"
+      (click)="toggleFilter('category')"
+      >
+      Category
+    </button>
+  </div>
+  @if (activeFilter() && (entityOptions().length || entityLoading())) {
+  <div class="entity-results">
+    @if (entityLoading()) {
+    <div class="entity-loading">Searching…</div>
+    } @else {
+    @for (option of entityOptions(); track option.id) {
+    <button class="entity-option" type="button" (click)="selectEntity(option)">
+      <strong>{{ option.name }}</strong>
+      <small>{{ activeFilter() }}</small>
+    </button>
+    }
+    }
+  </div>
   }
+</div>
+</div>
+<aside class="borrowing-policy">
+  <span class="policy-number">{{ borrowing.maxBooks }}</span>
+  <div>
+    <strong>Your borrowing limit</strong>
+    <span>
+      Up to {{ borrowing.maxBooks }} books · {{ borrowing.activeBorrowingCount() }} currently borrowed · any category
+    </span>
+  </div>
+</aside>
+@if (loading()) {
+<div class="state">Loading the collection…</div>
+} @else if (books().length) {
+<div class="grid">
+  @for (book of books(); track book.id) {
+  <app-book-card
+  [book]="book"
+  [admin]="auth.isStaff()"
+  (deleteBook)="delete($event)"
+  />
+  }
+</div>
+} @else {
+<div class="empty">
+  <strong>No books found</strong>
+  <span>Try a different search or explore the full collection.</span>
+  <a routerLink="/books">Clear search</a>
+</div>
+}
 </section>

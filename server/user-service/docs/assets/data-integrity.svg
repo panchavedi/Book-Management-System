@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#08111f"/><stop offset="55%" stop-color="#111c35"/><stop offset="100%" stop-color="#1b1235"/></linearGradient>
+ <linearGradient id="g1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient>
+ <linearGradient id="g2"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+ <linearGradient id="g3"><stop stop-color="#34d399"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"/></marker>
+</defs>
+<rect width="1200" height="650" rx="30" fill="url(#bg)"/>
+<circle cx="1080" cy="80" r="150" fill="#6366f1" opacity=".08"/>
+<circle cx="80" cy="570" r="180" fill="#06b6d4" opacity=".06"/>
+<text x="60" y="65" fill="#f8fafc" font-family="Arial, sans-serif" font-size="31" font-weight="700">Data Integrity — Validation at the Boundary, Uniqueness in the Database</text>
+<text x="60" y="98" fill="#94a3b8" font-family="Arial, sans-serif" font-size="16">Defense in depth prevents bad state from becoming persistent state.</text>
+
+<g filter="url(#shadow)">
+<rect x="55" y="155" width="230" height="150" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="55" y="155" width="230" height="6" rx="3" fill="url(#g1)"/>
+<text x="75" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Input Boundary</text>
+<text x="75" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">@Valid DTOs</text>
+<text x="75" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">field constraints</text>
+<text x="75" y="265" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">normalized strings</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="320" y="155" width="230" height="150" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="320" y="155" width="230" height="6" rx="3" fill="url(#g1)"/>
+<text x="340" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Service Rules</text>
+<text x="340" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">duplicate checks</text>
+<text x="340" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">role allow-list</text>
+<text x="340" y="265" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">ownership checks</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="585" y="155" width="230" height="150" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="585" y="155" width="230" height="6" rx="3" fill="url(#g1)"/>
+<text x="605" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Persistence</text>
+<text x="605" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">unique username</text>
+<text x="605" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">unique email</text>
+<text x="605" y="265" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">unique phone</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="850" y="155" width="295" height="150" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="850" y="155" width="295" height="6" rx="3" fill="url(#g1)"/>
+<text x="870" y="193" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Consistent API</text>
+<text x="870" y="221" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">DTO responses</text>
+<text x="870" y="243" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">no entity leakage</text>
+<text x="870" y="265" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">central exception mapping</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="170" y="395" width="270" height="145" rx="18" fill="url(#g1)" opacity=".95"/>
+<rect x="170" y="395" width="270" height="6" rx="3" fill="url(#g1)"/>
+<text x="190" y="433" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Normalization</text>
+<text x="190" y="461" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">email → lowercase</text>
+<text x="190" y="483" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">trim user data</text>
+<text x="190" y="505" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">null optional fields</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="465" y="395" width="270" height="145" rx="18" fill="url(#g3)" opacity=".95"/>
+<rect x="465" y="395" width="270" height="6" rx="3" fill="url(#g1)"/>
+<text x="485" y="433" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Query Intent</text>
+<text x="485" y="461" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">existsBy... for</text>
+<text x="485" y="483" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">cheap uniqueness checks</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="760" y="395" width="270" height="145" rx="18" fill="url(#g2)" opacity=".95"/>
+<rect x="760" y="395" width="270" height="6" rx="3" fill="url(#g1)"/>
+<text x="780" y="433" fill="#fff" font-family="Arial, sans-serif" font-size="19" font-weight="700">Error Contract</text>
+<text x="780" y="461" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">400 / 401 / 403 / 404 /</text>
+<text x="780" y="483" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="14">409 / 500 mapped centrally</text>
+</g>
+<line x1="285" y1="230" x2="320" y2="230" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="550" y1="230" x2="585" y2="230" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="815" y1="230" x2="850" y2="230" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="440" y1="468" x2="465" y2="468" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="735" y1="468" x2="760" y2="468" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="60" y="610" fill="#67e8f9" font-family="Arial, sans-serif" font-size="15" font-weight="700">Application validation improves UX; database constraints remain the final integrity boundary.</text>
+</svg>

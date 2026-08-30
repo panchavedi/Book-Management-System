@@ -1,93 +1,202 @@
 @if (loading()) {
-  <p class="state">Loading</p>
+  <div class="state">
+    Loading book…
+  </div>
 } @else if (book(); as item) {
   <section class="detail">
-    <a class="back" routerLink="/books">Books</a>
+    <a
+      class="back"
+      routerLink="/books"
+    >
+      ← Back to collection
+    </a>
 
-    <div class="hero">
-      <div class="cover"><span>{{ item.title.charAt(0).toUpperCase() }}</span></div>
-      <span class="category-pill">{{ item.categoryName }}</span>
-      <h1>{{ item.title }}</h1>
-      <p>{{ item.authorName }}</p>
-
-      <div class="borrow-summary" aria-label="Borrowing status">
-        <strong>{{ borrowing.activeBorrowingCount() }} / {{ borrowing.maxBooks }}</strong>
-        <span>books borrowed</span>
-        @if (borrowing.borrowedCategoryName(); as category) {
-          <span class="summary-category">Category locked to <b>{{ category }}</b></span>
-        } @else {
-          <span class="summary-category">You can choose one category</span>
-        }
+    <div class="book-hero">
+      <div class="cover-column">
+        <app-book-cover
+          [title]="item.title"
+          [images]="item.images"
+          size="large"
+        />
       </div>
 
-      <div class="links">
-        @if (isBorrowedByMe()) {
-          <button type="button" (click)="returnBook()" [disabled]="working()">
-            {{ working() ? 'Returning' : 'Return Book' }}
-          </button>
-        } @else {
-          <button type="button" (click)="borrow()" [disabled]="!canBorrow() || working()">
-            {{ working() ? 'Borrowing' : 'Borrow Book' }}
-          </button>
-        }
-        @if (auth.isAdmin()) {
-          <a [routerLink]="['/books', item.id, 'edit']">Edit</a>
+      <div class="book-copy">
+        <span class="category-pill">
+          {{ item.categoryName }}
+        </span>
+
+        <h1>{{ item.title }}</h1>
+
+        <p class="author">
+          by <strong>{{ item.authorName }}</strong>
+        </p>
+
+        <p class="description">
+          {{
+            item.about ||
+              'A carefully catalogued edition, ready for a new reader.'
+          }}
+        </p>
+
+        <div class="availability">
+          <div>
+            <span>Availability</span>
+            <strong>
+              {{ item.availableCopies }} of {{ item.totalCopies }} copies
+            </strong>
+          </div>
+
+          <div class="availability-bar">
+            <span
+              [style.width.%]="
+                item.totalCopies
+                  ? (item.availableCopies / item.totalCopies) * 100
+                  : 0
+              "
+            ></span>
+          </div>
+        </div>
+
+        <div class="actions">
+          @if (isBorrowedByMe()) {
+            <button
+              class="return-action"
+              type="button"
+              (click)="returnBook()"
+              [disabled]="working()"
+            >
+              {{ working() ? 'Returning…' : 'Return book' }}
+            </button>
+          } @else {
+            <button
+              class="borrow-action"
+              type="button"
+              (click)="borrow()"
+              [disabled]="!canBorrow() || working()"
+            >
+              {{ working() ? 'Borrowing…' : 'Borrow this book' }}
+            </button>
+          }
+
+          @if (auth.isAdmin()) {
+            <a
+              class="edit-action"
+              [routerLink]="['/books', item.id, 'edit']"
+            >
+              Edit book
+            </a>
+          }
+        </div>
+
+        @if (!isBorrowedByMe() && borrowMessage()) {
+          <div class="notice">
+            {{ borrowMessage() }}
+          </div>
         }
       </div>
-
-      @if (!isBorrowedByMe() && borrowMessage()) {
-        <p class="borrow-message">{{ borrowMessage() }}</p>
-      }
     </div>
 
     <div class="facts">
-      <article><span>ISBN</span><strong>{{ item.isbn }}</strong></article>
-      <article><span>Category</span><strong>{{ item.categoryName }}</strong></article>
-      <article><span>Publisher</span><strong>{{ item.publisher || '—' }}</strong></article>
-      <article><span>Printed</span><strong>{{ item.printedOn ? (item.printedOn | date:'mediumDate') : '—' }}</strong></article>
-      <article><span>Available</span><strong>{{ item.availableCopies }}</strong></article>
-      <article><span>Borrowed</span><strong>{{ item.borrowedCopies }}</strong></article>
+      <article>
+        <span>ISBN</span>
+        <strong>{{ item.isbn }}</strong>
+      </article>
+
+      <article>
+        <span>Publisher</span>
+        <strong>{{ item.publisher || '—' }}</strong>
+      </article>
+
+      <article>
+        <span>Printed</span>
+        <strong>
+          {{
+            item.printedOn
+              ? (item.printedOn | date: 'mediumDate')
+              : '—'
+          }}
+        </strong>
+      </article>
+
+      <article>
+        <span>Borrowed</span>
+        <strong>{{ item.borrowedCopies }}</strong>
+      </article>
     </div>
 
-    @if (item.about) {
-      <p class="about">{{ item.about }}</p>
+    @if (isStaff()) {
+      <section class="borrowers-section">
+        <div class="borrowers-header">
+          <div>
+            <span class="eyebrow">STAFF VIEW</span>
+            <h2>Current borrowers</h2>
+            <p>
+              User details are supplied by the User Service.
+            </p>
+          </div>
+
+          <strong>{{ activeBorrowers().length }}</strong>
+        </div>
+
+        @if (borrowersLoading()) {
+          <div class="empty-borrowers">
+            Loading borrowers…
+          </div>
+        } @else if (activeBorrowers().length) {
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reader</th>
+                  <th>Contact</th>
+                  <th>Borrowed</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (row of activeBorrowers(); track row.id) {
+                  <tr>
+                    <td>
+                      <strong>
+                        {{
+                          row.borrower?.fullName ||
+                            row.borrower?.username ||
+                            ('User #' + row.borrowerId)
+                        }}
+                      </strong>
+                      <small>{{ row.borrower?.username }}</small>
+                    </td>
+
+                    <td>
+                      <span>{{ row.borrower?.email || '—' }}</span>
+                      <small>{{ row.borrower?.phone || '—' }}</small>
+                    </td>
+
+                    <td>
+                      {{ row.borrowedOn | date: 'medium' }}
+                    </td>
+
+                    <td>
+                      <span class="status">
+                        {{ row.status }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="empty-borrowers">
+            No active borrowers for this book.
+          </div>
+        }
+      </section>
     }
   </section>
 } @else {
-  <p class="state">Not found</p>
-}
-
-
-@if (isStaff()) {
-  <section class="borrowers-section" aria-labelledby="active-borrowers-heading">
-    <div class="borrowers-header">
-      <div>
-        <span class="eyebrow">BORROWINGS</span>
-        <h2 id="active-borrowers-heading">Active Borrowers</h2>
-        <p>Live borrowers currently holding this book.</p>
-      </div>
-      <strong>{{ activeBorrowers().length }}</strong>
-    </div>
-
-    @if (borrowersLoading()) {
-      <p class="state">Loading active borrowers…</p>
-    } @else if (activeBorrowers().length) {
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Borrower ID</th><th>Borrowed On</th><th>Status</th></tr></thead>
-          <tbody>
-            @for (borrower of activeBorrowers(); track borrower.id) {
-              <tr>
-                <td>{{ borrower.borrowerId }}</td>
-                <td>{{ borrower.borrowedOn | date:'medium' }}</td>
-                <td><span class="status active-status">{{ borrower.status }}</span></td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    } @else {
-      <div class="empty-borrowers">No active borrowers for this book.</div>
-    }
-  </section>
+  <div class="state">
+    Book not found.
+  </div>
 }

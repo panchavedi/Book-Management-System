@@ -5,15 +5,10 @@
       <h1>Reading Books</h1>
       <p>{{ active().length }} active borrowing{{ active().length === 1 ? '' : 's' }}</p>
     </div>
-
     <div class="policy-card">
       <div>
-        <strong>One category at a time</strong>
-        @if (borrowing.borrowedCategoryName(); as category) {
-          <span>You are currently borrowing <b>{{ category }}</b> books.</span>
-        } @else {
-          <span>Choose a category and borrow up to {{ borrowing.maxBooks }} books.</span>
-        }
+        <strong>Flexible reading</strong>
+        <span>You can borrow books from any category, up to {{ borrowing.maxBooks }} active books.</span>
       </div>
       <div class="limit">
         <strong>{{ active().length }}</strong>
@@ -21,65 +16,84 @@
       </div>
     </div>
   </header>
-
   <div class="tabs" role="tablist">
     <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'active'" [class.active]="activeTab() === 'active'" (click)="selectTab('active')">Active Borrowed List</button>
     <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'history'" [class.active]="activeTab() === 'history'" (click)="selectTab('history')">All History</button>
   </div>
-
   @if (loading() && activeTab() === 'active') {
-    <p class="state">Loading active borrowings…</p>
+  <p class="state">Loading active borrowings…</p>
   } @else if (activeTab() === 'active') {
-    @if (active().length) {
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Book</th><th>Borrowed On</th><th>Status</th><th></th></tr>
-          </thead>
-          <tbody>
-            @for (item of active(); track item.id) {
-              <tr>
-                <td><a [routerLink]="['/books', item.bookId]">{{ item.bookTitle }}</a></td>
-                <td>{{ item.borrowedOn | date:'medium' }}</td>
-                <td><span class="status active-status">{{ item.status }}</span></td>
-                <td class="action-cell"><button type="button" (click)="returnBook(item.bookId)" [disabled]="workingBookId() !== null">{{ workingBookId() === item.bookId ? 'Returning…' : 'Return' }}</button></td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    } @else {
-      <div class="empty">
-        <span class="empty-icon">＋</span>
-        <h2>No active books</h2>
-        <p>Pick a category from the library and start reading.</p>
-        <a routerLink="/books">Explore Library</a>
-      </div>
-    }
+  @if (active().length) {
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Borrowed On</th>
+          <th>Status</th>
+          <th>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of active(); track item.id) {
+        <tr>
+          <td>
+            <a [routerLink]="['/books', item.bookId]">{{ item.bookTitle }}</a>
+          </td>
+          <td>{{ item.borrowedOn | date:'medium' }}</td>
+          <td>
+            <span class="status active-status">{{ item.status }}</span>
+          </td>
+          <td class="action-cell">
+            <button class="return-action" type="button" (click)="returnBook(item.bookId)" [disabled]="workingBookId() !== null">{{ workingBookId() === item.bookId ? 'Returning…' : 'Return' }}</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
   } @else {
-    @if (history().length) {
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Book</th><th>Borrowed On</th><th>Returned On</th><th>Status</th></tr>
-          </thead>
-          <tbody>
-            @for (item of history(); track item.id) {
-              <tr>
-                <td><a [routerLink]="['/books', item.bookId]">{{ item.bookTitle }}</a></td>
-                <td>{{ item.borrowedOn | date:'medium' }}</td>
-                <td>{{ item.returnedOn ? (item.returnedOn | date:'medium') : '—' }}</td>
-                <td><span class="status" [class.active-status]="item.status === 'BORROWED'">{{ item.status }}</span></td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    } @else {
-      <div class="empty">
-        <h2>No borrowing history</h2>
-        <p>Your completed and active transactions will appear here.</p>
-      </div>
-    }
+  <div class="empty">
+    <span class="empty-icon">＋</span>
+    <h2>No active books</h2>
+    <p>Pick a category from the library and start reading.</p>
+    <a routerLink="/books">Explore Library</a>
+  </div>
+  }
+  } @else {
+  @if (history().length) {
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Borrowed On</th>
+          <th>Returned On</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of history(); track item.id) {
+        <tr>
+          <td>
+            <a [routerLink]="['/books', item.bookId]">{{ item.bookTitle }}</a>
+          </td>
+          <td>{{ item.borrowedOn | date:'medium' }}</td>
+          <td>{{ item.returnedOn ? (item.returnedOn | date:'medium') : '—' }}</td>
+          <td>
+            <span class="status" [class.active-status]="item.status === 'BORROWED'">{{ item.status }}</span>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <div class="empty">
+    <h2>No borrowing history</h2>
+    <p>Your completed and active transactions will appear here.</p>
+  </div>
+  }
   }
 </section>

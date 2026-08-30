@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="500" viewBox="0 0 1400 500">
+<rect width="1400" height="500" rx="30" fill="#111827"/>
+<text x="60" y="62" fill="#f9fafb" font-family="Arial" font-size="32" font-weight="700">Transaction-aware Image Lifecycle</text>
+<text x="60" y="98" fill="#9ca3af" font-family="Arial" font-size="17">The database and filesystem are coordinated instead of being treated as unrelated side effects.</text>
+<g font-family="Arial" text-anchor="middle">
+<rect x="70" y="170" width="230" height="150" rx="22" fill="#0ea5e9"/><text x="185" y="220" fill="white" font-size="21" font-weight="700">Validate Upload</text><text x="185" y="255" fill="#e0f2fe" font-size="16">type • bytes • pixels</text><text x="185" y="282" fill="#e0f2fe" font-size="16">safe normalized path</text>
+<rect x="370" y="170" width="230" height="150" rx="22" fill="#8b5cf6"/><text x="485" y="220" fill="white" font-size="21" font-weight="700">Store New File</text><text x="485" y="255" fill="#ede9fe" font-size="16">UUID filename</text><text x="485" y="282" fill="#ede9fe" font-size="16">book-scoped directory</text>
+<rect x="670" y="170" width="230" height="150" rx="22" fill="#10b981"/><text x="785" y="220" fill="white" font-size="21" font-weight="700">Persist Metadata</text><text x="785" y="255" fill="#d1fae5" font-size="16">URL • MIME • size</text><text x="785" y="282" fill="#d1fae5" font-size="16">display order</text>
+<rect x="970" y="135" width="360" height="95" rx="22" fill="#16a34a"/><text x="1150" y="177" fill="white" font-size="20" font-weight="700">COMMIT → delete replaced old files</text><text x="1150" y="205" fill="#dcfce7" font-size="15">afterCommit()</text>
+<rect x="970" y="275" width="360" height="95" rx="22" fill="#dc2626"/><text x="1150" y="317" fill="white" font-size="20" font-weight="700">ROLLBACK → delete newly written files</text><text x="1150" y="345" fill="#fee2e2" font-size="15">afterCompletion()</text>
+</g>
+<g stroke="#9ca3af" stroke-width="4" fill="none"><path d="M300 245 H370"/><path d="M600 245 H670"/><path d="M900 220 C930 220 940 182 970 182"/><path d="M900 270 C930 270 940 322 970 322"/></g>
+<text x="70" y="440" fill="#d1d5db" font-family="Arial" font-size="17">This prevents orphan files after failed DB transactions and avoids deleting the old image before a replacement is safely committed.</text>
+</svg>

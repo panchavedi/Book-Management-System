@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="850" viewBox="0 0 1500 850">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#eef7ff"/><stop offset="55%" stop-color="#f9fdf8"/><stop offset="100%" stop-color="#fff3f7"/>
+  </linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity=".14"/>
+  </filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+    <path d="M0,0 L12,6 L0,12 z" fill="#51606f"/>
+  </marker>
+</defs>
+<rect width="1500" height="850" rx="28" fill="url(#bg)"/>
+<text x="70" y="82" font-family="Inter,Arial,sans-serif" font-size="38" font-weight="800" fill="#16324f">BMS Microservices — Overall Architecture</text>
+<text x="70" y="120" font-family="Inter,Arial,sans-serif" font-size="19" fill="#52677a">Three registered applications coordinated through an API Gateway and Eureka service discovery.</text>
+
+<line x1="330" y1="288" x2="420" y2="275" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="700" y1="275" x2="800" y2="188" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="700" y1="275" x2="800" y2="382" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="700" y1="275" x2="1160" y2="188" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="1070" y1="382" x2="1160" y2="380" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="1290" y1="260" x2="1290" y2="305" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="1290" y1="450" x2="1290" y2="495" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="940" y1="260" x2="940" y2="305" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)">
+<rect x="70" y="220" width="260" height="135" rx="22" fill="#e6f4ff" stroke="#5aa8e6" stroke-width="3"/>
+<text x="94" y="258" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">Web Client</text>
+<text x="94" y="292" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Angular UI • responsive workspace</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="420" y="190" width="280" height="170" rx="22" fill="#eef2ff" stroke="#7c83fd" stroke-width="3"/>
+<text x="444" y="228" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">API Gateway</text>
+<text x="444" y="262" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Single entry point • routing</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="800" y="115" width="270" height="145" rx="22" fill="#fff5df" stroke="#e5a83b" stroke-width="3"/>
+<text x="824" y="153" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">Eureka Server</text>
+<text x="824" y="187" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Service discovery • registered apps</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="800" y="305" width="280" height="155" rx="22" fill="#e9fbf2" stroke="#4db37a" stroke-width="3"/>
+<text x="824" y="343" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">User Service</text>
+<text x="824" y="377" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Identity • JWT • roles • users</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="1160" y="115" width="260" height="145" rx="22" fill="#f4ecff" stroke="#a56ee8" stroke-width="3"/>
+<text x="1184" y="153" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">Library Service</text>
+<text x="1184" y="187" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Books • inventory • borrowing</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="1160" y="305" width="260" height="145" rx="22" fill="#eef7f0" stroke="#5b9b72" stroke-width="3"/>
+<text x="1184" y="343" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">PostgreSQL</text>
+<text x="1184" y="377" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">Persistent domain state</text>
+</g>
+<g filter="url(#shadow)">
+<rect x="1160" y="495" width="260" height="145" rx="22" fill="#fff0f3" stroke="#df7187" stroke-width="3"/>
+<text x="1184" y="533" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="800" fill="#17324d">JWT Trust</text>
+<text x="1184" y="567" font-family="Inter,Arial,sans-serif" font-size="16" fill="#51606f">RSA public-key verification</text>
+</g>
+<text x="70" y="810" font-family="Inter,Arial,sans-serif" font-size="16" fill="#718096">KnowledgeHub • Book Management System</text></svg>

@@ -18,6 +18,7 @@ public interface BorrowingRepository
             Long borrowerId,
             BorrowingStatus status
     );
+
     boolean existsByBookIdAndStatus(
             Long bookId,
             BorrowingStatus status
@@ -47,7 +48,6 @@ public interface BorrowingRepository
             @Param("borrowerId") Long borrowerId
     );
 
-
     @Query("""
         SELECT br
         FROM Borrowing br
@@ -59,6 +59,25 @@ public interface BorrowingRepository
     List<Borrowing> findActiveBorrowingsByBorrowerId(
             @Param("borrowerId") Long borrowerId
     );
+
+    @Query("""
+        SELECT br
+        FROM Borrowing br
+        JOIN FETCH br.book b
+        WHERE br.book.id = :bookId
+        ORDER BY br.borrowedOn DESC
+    """)
+    List<Borrowing> findBorrowingHistoryByBookId(
+            @Param("bookId") Long bookId
+    );
+
+    @Query("""
+        SELECT br
+        FROM Borrowing br
+        JOIN FETCH br.book b
+        ORDER BY br.borrowedOn DESC
+    """)
+    List<Borrowing> findAllBorrowingHistory();
 
     List<Borrowing> findByBookIdAndStatus(
             Long bookId,

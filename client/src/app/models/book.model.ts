@@ -6,10 +6,18 @@ export interface EntityOption {
 }
 
 export interface Author extends EntityOption {}
-
 export interface Category extends EntityOption {}
 
 export type BookAvailability = 'AVAILABLE' | 'BORROWED' | 'UNAVAILABLE';
+
+export interface BookImage {
+  id: number;
+  url: string;
+  originalFileName?: string;
+  contentType?: string;
+  fileSize?: number;
+  displayOrder: number;
+}
 
 export interface Book {
   id: number;
@@ -26,6 +34,7 @@ export interface Book {
   borrowedCopies: number;
   about: string | null;
   borrowed: boolean;
+  images: BookImage[];
   status?: BookAvailability;
 }
 
@@ -54,6 +63,16 @@ export interface PagedResponse<T> {
   size: number;
 }
 
+export interface BorrowerDetails {
+  id: number;
+  username: string;
+  email?: string;
+  role?: string;
+  fullName?: string;
+  phone?: string;
+  address?: string;
+}
+
 export interface Borrowing {
   id: number;
   bookId: number;
@@ -62,6 +81,7 @@ export interface Borrowing {
   categoryId?: number;
   categoryName?: string;
   borrowerId: number;
+  borrower?: BorrowerDetails;
   borrowedOn: string;
   returnedOn: string | null;
   status: 'BORROWED' | 'RETURNED' | string;

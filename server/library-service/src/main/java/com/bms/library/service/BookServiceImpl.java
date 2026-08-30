@@ -7,6 +7,7 @@ import com.bms.library.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,21 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
     private final BorrowingRepository borrowingRepository;
+    private final BookImageService bookImageService;
+
+    @Override
+    @Transactional
+    public BookResponse create(BookRequest request, List<MultipartFile> images) {
+        BookResponse response = create(request);
+
+        if (images != null && !images.isEmpty()) {
+            bookImageService.addImages(response.getId(), images);
+        }
+
+        Book saved = bookRepository.findWithAuthorAndCategoryById(response.getId())
+                .orElseThrow(() -> new BookNotFoundException(response.getId()));
+        return toResponse(saved);
+    }
 
     @Override
     @Transactional
@@ -136,6 +152,24 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public BookResponse update(
             Long id,
+            BookRequest request,
+            List<MultipartFile> images
+    ) {
+        BookResponse response = update(id, request);
+
+        if (images != null) {
+            bookImageService.replaceImages(id, images);
+        }
+
+        Book updated = bookRepository.findWithAuthorAndCategoryById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+        return toResponse(updated);
+    }
+
+    @Override
+    @Transactional
+    public BookResponse update(
+            Long id,
             BookRequest request
     ) {
 
@@ -225,6 +259,7 @@ public class BookServiceImpl implements BookService {
             );
         }
 
+        bookImageService.scheduleDeleteForBook(id);
         bookRepository.delete(book);
     }
 
@@ -357,8 +392,18 @@ public class BookServiceImpl implements BookService {
                 .totalCopies(book.getTotalCopies())
                 .availableCopies(book.getAvailableCopies())
                 .borrowedCopies(book.getBorrowedCopies())
-                .about(book.getAbout())
+                 .about(book.getAbout())
                 .borrowed(borrowed)
+                .images(book.getImages().stream()
+                        .map(image -> BookImageResponse.builder()
+                                .id(image.getId())
+                                .url(image.getImageUrl().replace("{imageId}", String.valueOf(image.getId())))
+                                .originalFileName(image.getOriginalFileName())
+                                .contentType(image.getContentType())
+                                .fileSize(image.getFileSize())
+                                .displayOrder(image.getDisplayOrder())
+                                .build())
+                        .toList())
                 .build();
     }
 
